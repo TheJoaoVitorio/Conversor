@@ -1,0 +1,62 @@
+unit uConDatabasesModel;
+
+interface
+
+uses
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB;
+
+type
+  TDatabasesModel = class
+    private
+      FConexaoDBs : TFDConnection;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function getConexao : TFDConnection;
+  end;
+
+implementation
+
+{ TDatabasesModel }
+
+constructor TDatabasesModel.Create;
+  begin
+    inherited;
+
+    FConexaoDBs := TFDConnection.Create(nil);
+  end;
+
+destructor TDatabasesModel.Destroy;
+  begin
+    FreeAndNil(FConexaoDBs);
+    inherited;
+  end;
+
+function TDatabasesModel.getConexao: TFDConnection;
+  begin
+    FConexaoDBs.Params.UserName := 'SYSDBA';
+    FConexaoDBs.Params.Password := 'masterkey';
+    FConexaoDBs.Params.Add('DriverId=FB');
+    FConexaoDBs.Params.Database := 'C:\Users\joaov\OneDrive\Desktop\DATABASES\DATABASESCONVERSOR.FDB';
+    FConexaoDBs.LoginPrompt     := False;
+    FConexaoDBs.Connected       := True;
+
+    Result := FConexaoDBs;
+  end;
+
+end.

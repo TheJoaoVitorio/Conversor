@@ -1,0 +1,92 @@
+unit uConexoesDisponiveisModel;
+
+interface
+
+uses
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB;
+
+type
+  TConexoesDisponiveisModel = class
+    private
+      FConexoesDisponiveis      : TFDConnection;
+      FQueryConexoesDisponiveis : TFDQuery;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function getConexoesDisponiveis : TFDQuery;
+
+      function createConexao : TFDConnection;
+  end;
+
+implementation
+
+{ TConexoesDisponiveisModel }
+
+constructor TConexoesDisponiveisModel.Create;
+  begin
+    inherited;
+    FConexoesDisponiveis      := TFDConnection.Create(nil);
+    FQueryConexoesDisponiveis := TFDQuery.Create(nil);
+  end;
+
+destructor TConexoesDisponiveisModel.Destroy;
+  begin
+    FreeAndNil(FConexoesDisponiveis);
+    FreeAndNil(FQueryConexoesDisponiveis);
+    inherited;
+  end;
+
+
+function TConexoesDisponiveisModel.createConexao: TFDConnection;
+  begin
+    with FConexoesDisponiveis do
+      begin
+        Params.Add('DriverID=FB');
+        Params.UserName := 'SYSDBA';
+        Params.Password := 'masterkey';
+        Params.Add('Database=C:\databases\DATABASESCONVERSOR.FDB');
+        LoginPrompt     := False;
+        Connected       := True;
+
+        Result          := FConexoesDisponiveis;
+      end;
+  end;
+
+function TConexoesDisponiveisModel.getConexoesDisponiveis: TFDQuery;
+  begin
+    try
+       with FQueryConexoesDisponiveis do
+      begin
+        Close;
+        Connection := FConexoesDisponiveis;
+        SQL.Text   := 'SELECT * FROM DATABASES';
+        Open;
+
+        Result     := FQueryConexoesDisponiveis;
+      end;
+    except
+      on E: Exception do
+        begin
+          Result.Free;
+        end;
+
+    end;
+
+  end;
+
+end.

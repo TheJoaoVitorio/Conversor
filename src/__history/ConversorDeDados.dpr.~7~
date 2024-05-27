@@ -1,0 +1,18 @@
+program ConversorDeDados;
+
+uses
+  Vcl.Forms,
+  uSelecionarDatabasesView in 'view\uSelecionarDatabasesView.pas' {frmSelecionarDatabases},
+  uStylesView in 'view\uStylesView.pas',
+  uConexoesDisponiveisModel in 'model\uConexoesDisponiveisModel.pas',
+  uConexoesDisponiveisController in 'controller\uConexoesDisponiveisController.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  ReportMemoryLeaksOnShutdown   := True;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmSelecionarDatabases, frmSelecionarDatabases);
+  Application.Run;
+end.

@@ -1,0 +1,19 @@
+unit uConexoesDisponiveisController;
+
+interface
+
+uses
+
+type
+  TConexoesDisponiveisController = class
+
+  private
+
+  public
+
+
+  end;
+
+implementation
+
+end.
