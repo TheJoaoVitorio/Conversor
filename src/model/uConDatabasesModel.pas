@@ -29,10 +29,14 @@ type
       destructor Destroy; override;
 
       function getConexao : TFDConnection;
-      function selectDatabasesDisponiveis : TFDQuery;
+      function selectDatabasesDisponiveis(dbEscolhido : String) : TFDQuery;
+      function select : TFDQuery;
   end;
 
 implementation
+
+uses
+  Vcl.Dialogs;
 
 { TDatabasesModel }
 
@@ -63,21 +67,36 @@ function TDatabasesModel.getConexao: TFDConnection;
     Result := FConexaoDBs;
   end;
 
-function TDatabasesModel.selectDatabasesDisponiveis: TFDQuery;
+function TDatabasesModel.select: TFDQuery;
+  begin
+    QueryConexaoDBs.Close;
+    QueryConexaoDBs.Connection := FConexaoDBs;
+    QueryConexaoDBs.SQL.Text   := 'SELECT * FROM DATABASES';
+    QueryConexaoDBs.Open;
+
+    Result := QueryConexaoDBs;
+  end;
+
+function TDatabasesModel.selectDatabasesDisponiveis(dbEscolhido : String): TFDQuery;
   begin
     try
       with QueryConexaoDBs do
         begin
           Close;
           Connection := FConexaoDBs;
-          SQL.Text   := 'SELECT * FROM DATABASES';
+          SQL.Text   := 'SELECT * FROM DATABASES WHERE NOME LIKE :dbEscolhido';
+          Params.ParamByName('dbEscolhido').AsString :=  '%' + dbEscolhido + '%';
           Open;
 
           Result := QueryConexaoDBs;
         end;
     except
-      Result.Free;
-      raise;
+      on E : Exception do
+      begin
+        ShowMessage('Erro ao executar consulta: ' + E.Message);
+        Result := nil;
+      end;
+
     end;
   end;
 

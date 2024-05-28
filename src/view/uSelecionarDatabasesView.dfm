@@ -244,7 +244,7 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
             ParentBiDiMode = False
             TabOrder = 0
             ExplicitHeight = 322
-            object Panel2: TPanel
+            object pnlBuscarDatabase: TPanel
               Left = 0
               Top = 0
               Width = 320
@@ -308,43 +308,39 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
                   ExplicitHeight = 105
                 end
               end
-              object edtBuscarDatabase: TEdit
-                AlignWithMargins = True
-                Left = 61
-                Top = 5
-                Width = 254
-                Height = 38
-                Margins.Left = 5
-                Margins.Top = 5
-                Margins.Right = 5
-                Margins.Bottom = 5
+              object cbxTiposDeDatabases: TComboBox
+                Left = 56
+                Top = 0
+                Width = 264
+                Height = 45
                 Align = alClient
-                AutoSize = False
-                BevelInner = bvNone
-                BevelOuter = bvNone
-                BorderStyle = bsNone
-                Color = 3289650
+                Color = 3618615
                 Font.Charset = ANSI_CHARSET
                 Font.Color = clWhite
-                Font.Height = -21
+                Font.Height = -27
                 Font.Name = 'Montserrat Medium'
                 Font.Style = [fsBold]
                 ParentFont = False
                 TabOrder = 1
                 TextHint = 'Buscar Database'
+                OnChange = cbxTiposDeDatabasesChange
+                Items.Strings = (
+                  'Firebird'
+                  'MySQL'
+                  'NexusDB'
+                  'PostgreeSQL'
+                  'Oracle')
               end
             end
           end
-          object DBListConexoesDisponiveis: TDBListBox
+          object ListBox1: TListBox
             Left = 0
-            Top = 108
-            Width = 317
-            Height = 205
+            Top = 94
+            Width = 320
+            Height = 179
             Color = 3618615
-            DataField = 'nome'
-            DataSource = dsConexoesDisponiveis
             Font.Charset = ANSI_CHARSET
-            Font.Color = clWindowText
+            Font.Color = clWhite
             Font.Height = -21
             Font.Name = 'Montserrat Medium'
             Font.Style = [fsBold]
@@ -414,20 +410,12 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
               end
             end
           end
-          object Button1: TButton
-            Left = 96
-            Top = 208
-            Width = 75
-            Height = 25
-            Caption = 'Button1'
-            TabOrder = 1
-          end
         end
       end
     end
   end
   object dsConexoesDisponiveis: TDataSource
-    Left = 668
-    Top = 242
+    Left = 708
+    Top = 154
   end
 end

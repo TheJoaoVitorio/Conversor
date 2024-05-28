@@ -8,7 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Buttons, Vcl.CheckLst, Vcl.DBCtrls, Data.DB ,
-  FireDAC.Comp.Client , uDatabasesController;
+  FireDAC.Comp.Client , uDatabasesController, Vcl.Grids, Vcl.DBGrids;
 
 type
   TfrmSelecionarDatabases = class(TForm)
@@ -25,23 +25,23 @@ type
     pnlContent: TPanel;
     pnlContentLeft: TPanel;
     Panel1: TPanel;
-    Panel2: TPanel;
+    pnlBuscarDatabase: TPanel;
     pnlBuscarImg: TPanel;
     Image2: TImage;
-    edtBuscarDatabase: TEdit;
     pnlContentRight: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     SpeedButton1: TSpeedButton;
-    DBListConexoesDisponiveis: TDBListBox;
     dsConexoesDisponiveis: TDataSource;
-    Button1: TButton;
+    cbxTiposDeDatabases: TComboBox;
+    ListBox1: TListBox;
     procedure lblNavSairClick(Sender: TObject);
     procedure imgSairClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure cbxTiposDeDatabasesChange(Sender: TObject);
 
   private
-    procedure ConfigurarList;
+
   public
 
   end;
@@ -53,35 +53,45 @@ implementation
 
 {$R *.dfm}
 
+
+
+procedure TfrmSelecionarDatabases.cbxTiposDeDatabasesChange(Sender: TObject);
+var
+    dbEscolhido : String;
+    i: Integer;
+    Query : TFDQuery;
+  begin
+    dbEscolhido := cbxTiposDeDatabases.Text;
+
+    Query := TDatabasesController.getInstance.acessarConexao.selectDatabasesDisponiveis(dbEscolhido);
+    dsConexoesDisponiveis.DataSet :=  Query;
+
+    Query.Open;
+
+      ListBox1.Items.BeginUpdate;
+      try
+        ListBox1.Clear;
+        Query.First;
+        while not Query.Eof do
+          begin
+            if not Query.FieldByName('NOME').IsNull then
+              ListBox1.Items.Add(Query.FieldByName('NOME').AsString);
+
+            Query.Next;
+          end;
+      finally
+        ListBox1.Items.EndUpdate;
+      end;
+
+  end;
+
 procedure TfrmSelecionarDatabases.FormCreate(Sender: TObject);
   begin
     if TDatabasesController.getInstance.acessarConexao.getConexao.Connected then
       ShowMessage('Conectado');
 
-    ConfigurarList;
   end;
 
-
-procedure TfrmSelecionarDatabases.ConfigurarList;
-  var
-    Query : TFDQuery;
-  begin
-     DBListConexoesDisponiveis.DataSource := dsConexoesDisponiveis;
-    try
-      Query                         := TDatabasesController.getInstance.acessarConexao.selectDatabasesDisponiveis;
-      dsConexoesDisponiveis.DataSet := Query;
-
-      Query.First;
-      while not Query.Eof do
-        begin
-          DBListConexoesDisponiveis.Items.Add(Query.FieldByName('nome').AsString);
-          Query.Next;
-        end;
-    except
-      Query.Free;
-    end;
-
-  end;
 
 
 procedure TfrmSelecionarDatabases.imgSairClick(Sender: TObject);
