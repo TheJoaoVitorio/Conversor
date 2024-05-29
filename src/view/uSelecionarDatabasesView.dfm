@@ -332,21 +332,24 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
                   'Oracle')
               end
             end
-          end
-          object ListBox1: TListBox
-            Left = 0
-            Top = 94
-            Width = 320
-            Height = 179
-            Color = 3618615
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clWhite
-            Font.Height = -21
-            Font.Name = 'Montserrat Medium'
-            Font.Style = [fsBold]
-            ItemHeight = 29
-            ParentFont = False
-            TabOrder = 1
+            object ListBoxOpDatabases: TListBox
+              Left = 0
+              Top = 57
+              Width = 320
+              Height = 187
+              BevelInner = bvNone
+              Color = 3618615
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWhite
+              Font.Height = -21
+              Font.Name = 'Montserrat Medium'
+              Font.Style = [fsBold]
+              ItemHeight = 29
+              ParentFont = False
+              PopupMenu = PopupMenuOpcoesDatabases
+              TabOrder = 1
+              OnClick = ListBoxOpDatabasesClick
+            end
           end
         end
         object pnlContentRight: TPanel
@@ -359,6 +362,32 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
           TabOrder = 1
           ExplicitWidth = 279
           ExplicitHeight = 367
+          object Label1: TLabel
+            Left = 32
+            Top = 152
+            Width = 149
+            Height = 22
+            Caption = 'Database Origem:'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -16
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label2: TLabel
+            Left = 32
+            Top = 216
+            Width = 150
+            Height = 22
+            Caption = 'Database Destino:'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -16
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
           object Panel3: TPanel
             AlignWithMargins = True
             Left = 30
@@ -370,15 +399,14 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
             Margins.Right = 30
             Margins.Bottom = 0
             Align = alTop
-            BevelOuter = bvNone
             TabOrder = 0
             ExplicitWidth = 219
             object Panel4: TPanel
               AlignWithMargins = True
-              Left = 40
-              Top = 20
-              Width = 143
-              Height = 62
+              Left = 41
+              Top = 21
+              Width = 141
+              Height = 60
               Margins.Left = 40
               Margins.Top = 20
               Margins.Right = 40
@@ -394,15 +422,17 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
               ParentBackground = False
               ParentFont = False
               TabOrder = 0
-              ExplicitWidth = 139
+              ExplicitWidth = 137
               object SpeedButton1: TSpeedButton
                 Left = 0
                 Top = 0
-                Width = 143
-                Height = 62
+                Width = 141
+                Height = 60
                 Align = alClient
                 Caption = '?...'
                 Flat = True
+                Layout = blGlyphTop
+                Transparent = False
                 ExplicitLeft = 80
                 ExplicitTop = 24
                 ExplicitWidth = 23
@@ -410,12 +440,61 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
               end
             end
           end
+          object Edit1: TEdit
+            Left = 32
+            Top = 180
+            Width = 185
+            Height = 30
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 3618615
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clGray
+            Font.Height = -16
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 1
+            Text = 'Edit1'
+          end
+          object Edit2: TEdit
+            Left = 32
+            Top = 244
+            Width = 185
+            Height = 30
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BorderStyle = bsNone
+            Color = 3618615
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clGray
+            Font.Height = -16
+            Font.Name = 'Montserrat Medium'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 2
+            Text = 'Edit1'
+          end
         end
       end
     end
   end
   object dsConexoesDisponiveis: TDataSource
-    Left = 708
-    Top = 154
+    Left = 676
+    Top = 18
+  end
+  object PopupMenuOpcoesDatabases: TPopupMenu
+    OwnerDraw = True
+    Left = 424
+    Top = 176
+    object AdicionarOrigem1: TMenuItem
+      Caption = 'Adicionar como Origem'
+    end
+    object AdicionarDestino1: TMenuItem
+      Caption = 'Adicionar como Destino'
+    end
   end
 end
