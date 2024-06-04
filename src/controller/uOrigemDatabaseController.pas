@@ -13,7 +13,8 @@ type
     public
       class function GetController : TOrigemDatabaseController;
 
-      function TesteConexao         : Boolean;
+      function TesteConexao(EscolhidoPor : String) : Boolean;   { global - essa função deve testar todas conexões }
+
       function TesteConexaoMySQL    : Boolean;
       function TesteConexaoFirebird : Boolean;
 
@@ -35,20 +36,29 @@ class function TOrigemDatabaseController.GetController: TOrigemDatabaseControlle
   end;
 
 
-function TOrigemDatabaseController.TesteConexao: Boolean;
+function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;   {Param : Escolhido Por}
   begin
-
-    if AcessarOrigem = 'MySQL 10.4.32' then
+    if EscolhidoPor = 'TESTE' then
       begin
-        if TesteConexaoMySQL = True then
-          Result := True;
-      end;
 
-    if AcessarOrigem = 'Firebird 2.5.9' then
-      begin
-        if TesteConexaoFirebird = True then
-          Result := True;
-      end;
+        if AcessarOrigem = 'MySQL 10.4.32' then
+          begin
+            if TesteConexaoMySQL = True then
+              Result := True;
+          end;
+
+        if AcessarOrigem = 'Firebird 2.5.9' then
+          begin
+            if TesteConexaoFirebird = True then
+              Result := True;
+          end;
+
+      end
+
+    else if EscolhidoPor = 'G10' then
+      ShowMessage('G10');
+
+
 
 
   end;
