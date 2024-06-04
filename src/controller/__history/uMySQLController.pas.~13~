@@ -1,0 +1,98 @@
+unit uMySQLController;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.VCLUI.Wait,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Param,
+  FireDAC.DatS,
+  FireDAC.DApt.Intf,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet,
+  Datasnap.DBClient,
+  Vcl.StdCtrls,
+
+  uConexaoMySQL;
+  {
+      MySqlUserName : String;
+      MySqlPassword : String;
+      MySqlServer   : String;
+      MySqlPort     : Integer;
+      MySqlDatabase : String;
+  }
+
+type
+  TMySQLController = class
+    private
+      MySQLConexao : TConexaoMySql;
+
+      fUsername : String;
+      fPassword : String;
+      fServer   : String;
+      fPort     : String;
+      fDatabase : String;
+
+      constructor Create;
+      destructor Destroy; override;
+    public
+
+      class function GetControllerMY : TMySQLController;
+      property AcessarConexaoMy : TConexaoMySql read MySQLConexao write MySQLConexao;
+
+      property MySqlUserName : String read fUsername write fUsername;
+      property MySqlPassword : String read fPassword write fPassword;
+      property MySqlServer   : String read fServer   write fServer;
+      property MySqlPort     : String read fPort     write fPort;
+      property MySqlDatabase : String read fDatabase write fDatabase;
+
+  end;
+
+implementation
+
+var
+  iControllerMySQL : TMySQLController;
+
+{ TMySQLController }
+
+constructor TMySQLController.Create;
+  begin
+    inherited;
+    MySQLConexao := TConexaoMySql.Create;
+  end;
+
+destructor TMySQLController.Destroy;
+  begin
+    FreeAndNil(MySQLConexao);
+  end;
+
+class function TMySQLController.GetControllerMY: TMySQLController;
+  begin
+    if iControllerMySQL = nil then
+      iControllerMySQL := iControllerMySQL.Create;
+
+    Result := iControllerMySQL;
+  end;
+
+initialization
+  iControllerMySQL := TMySQLController.Create;
+
+finalization
+  if iControllerMySQL <> nil then
+    iControllerMySQL.Free;
+
+
+end.

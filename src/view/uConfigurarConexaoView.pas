@@ -1,0 +1,68 @@
+unit uConfigurarConexaoView;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils,
+  System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls ,
+
+
+  uMySQLController, uOrigemDatabaseController;
+
+type
+  TfrmConfigurarConexao = class(TForm)
+    pnlNavLateral: TPanel;
+    pnlNavHeader: TPanel;
+    Image1: TImage;
+    pnlNavSair: TPanel;
+    imgSair: TImage;
+    lblNavSair: TLabel;
+    pnlContainerMain: TPanel;
+    pnlHeader: TPanel;
+    lblTextHeader: TLabel;
+    pnlContent: TPanel;
+    edtDatabase: TEdit;
+    edtUsername: TEdit;
+    edtPassword: TEdit;
+    edtServer: TEdit;
+    edtPort: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    txtDatabaseEscolhido: TLabel;
+    procedure imgSairClick(Sender: TObject);
+    procedure lblNavSairClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+
+  public
+
+  end;
+
+var
+  frmConfigurarConexao: TfrmConfigurarConexao;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConfigurarConexao.FormShow(Sender: TObject);
+  begin
+    txtDatabaseEscolhido.Caption := TOrigemDatabaseController.GetController.AcessarOrigem;
+  end;
+
+procedure TfrmConfigurarConexao.imgSairClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+procedure TfrmConfigurarConexao.lblNavSairClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+end.

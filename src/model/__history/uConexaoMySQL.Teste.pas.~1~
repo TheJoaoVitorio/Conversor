@@ -1,0 +1,81 @@
+unit uConexaoMySQL;
+
+interface
+
+uses
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB ,
+  Datasnap.DBClient ;
+
+type
+  TConexaoMySql = class
+    private
+      MySqlConexao  : TFDConnection;
+      MySqlQuery    : TFDQuery;
+
+      mUsername : String;
+      mPassword : String;
+      mServer   : String;
+      mPort     : String;
+      mDatabase : String;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      procedure ConfigurarConexaoMySQL;
+
+      property MySqlUserName : String read mUsername write mUsername;
+      property MySqlPassword : String read mPassword write mPassword;
+      property MySqlServer   : String read mServer   write mServer;
+      property MySqlPort     : String read mPort     write mPort;
+      property MySqlDatabase : String read mDatabase write mDatabase;
+
+  end;
+
+implementation
+
+{ TConexaoMySql }
+
+procedure TConexaoMySql.ConfigurarConexaoMySQL;
+  begin
+    with MySqlConexao do
+      begin
+        Params.Add('DriverID=MySQL');
+        Params.Database     := mDatabase;
+        Params.UserName     := mUsername;
+        Params.Password     := mPassword;
+        Params.Add('Server='+ mServer);
+        Params.Add('Port='  + mPort);
+        LoginPrompt         := False;
+        Connected           := True;
+      end;
+  end;
+
+constructor TConexaoMySql.Create;
+  begin
+    MySqlConexao  := TFDConnection.Create(nil);
+    MySqlQuery    := TFDQuery.Create(nil);
+  end;
+
+destructor TConexaoMySql.Destroy;
+  begin
+    FreeAndNil(MySqlConexao);
+    FreeAndNil(MySqlQuery);
+    inherited;
+  end;
+
+
+end.

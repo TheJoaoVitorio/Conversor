@@ -1,0 +1,76 @@
+unit uPrincipalView;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils,
+  System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage,Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids ,
+
+  uOrigemDatabaseController, uMySQLController.Teste;
+
+type
+  TfrmPrincipal = class(TForm)
+    pnlMain: TPanel;
+    pnlNavLateral: TPanel;
+    pnlNavHeader: TPanel;
+    Image1: TImage;
+    pnlNavSair: TPanel;
+    imgSair: TImage;
+    lblNavSair: TLabel;
+    pnlContainerMain: TPanel;
+    pnlHeader: TPanel;
+    lblTextHeader: TLabel;
+    pnlContent: TPanel;
+    ComboBox2: TComboBox;
+    ComboBox1: TComboBox;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    Image2: TImage;
+    procedure imgSairClick(Sender: TObject);
+    procedure lblNavSairClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmPrincipal.FormShow(Sender: TObject);
+  begin
+    if TOrigemDatabaseController.GetController.AcessarOrigem = 'MySQL 10.4.32' then
+      begin
+        ShowMessage('Vc escolheu MySQL');
+        if TMySQLController.GetControllerMY.AcessarConexaoMy.GetConexaoMySQL.Connected then
+          ShowMessage('Conectado ao MySQL')
+        else
+          ShowMessage('Falha ao conectar!');
+          Exit;
+      end
+    else if TOrigemDatabaseController.GetController.AcessarOrigem = 'Firebird 2.5' then
+      ShowMessage('Vc escolheu Firebird')
+    else
+      Exit;
+
+
+  end;
+
+procedure TfrmPrincipal.imgSairClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+procedure TfrmPrincipal.lblNavSairClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+end.

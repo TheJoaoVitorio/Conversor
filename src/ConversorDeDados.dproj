@@ -98,13 +98,20 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="view\uSelecionarDatabasesView.pas">
+        <DCCReference Include="view\uSelecionarOrigemView.pas">
             <Form>frmSelecionarDatabases</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="view\uStylesView.pas"/>
-        <DCCReference Include="controller\uDatabasesController.pas"/>
-        <DCCReference Include="model\uConDatabasesModel.pas"/>
+        <DCCReference Include="model\uConexaoMySQL.Teste.pas"/>
+        <DCCReference Include="model\uConexaoFirebird.Teste.pas"/>
+        <DCCReference Include="controller\uMySQLController.Teste.pas"/>
+        <DCCReference Include="controller\uOrigemDatabaseController.pas"/>
+        <DCCReference Include="view\uPrincipalView.pas">
+            <Form>frmPrincipal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="controller\uFirebirdController.Teste.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

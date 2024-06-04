@@ -1,0 +1,63 @@
+unit uConexaoMySQL;
+
+interface
+
+uses
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB ,
+  Datasnap.DBClient ,
+
+  uMySQLController;
+
+type
+  TConexaoMySql = class
+    private
+      MySqlConexao  : TFDConnection;
+      MySqlQuery    : TFDQuery;
+
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      property MySqlUserName : String read fUsername write fUsername;
+      property MySqlPassword : String read fPassword write fPassword;
+      property MySqlServer   : String read fServer   write fServer;
+      property MySqlPort     : String read fPort     write fPort;
+      property MySqlDatabase : String read fDatabase write fDatabase;
+
+  end;
+
+implementation
+
+{ TConexaoMySql }
+
+
+
+constructor TConexaoMySql.Create;
+  begin
+    MySqlConexao  := TFDConnection.Create(nil);
+    MySqlQuery    := TFDQuery.Create(nil);
+  end;
+
+destructor TConexaoMySql.Destroy;
+  begin
+    FreeAndNil(MySqlConexao);
+    FreeAndNil(MySqlQuery);
+    inherited;
+  end;
+
+
+end.

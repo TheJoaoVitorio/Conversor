@@ -1,0 +1,67 @@
+unit uConexaoFirebird;
+
+interface
+
+uses
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB ,
+  Datasnap.DBClient;
+
+type
+  TConexaoFirebird = class
+    private
+      FBConexao  : TFDConnection;
+
+      {falta database}
+      FBUserName : String;
+      FBPassword : String;
+      FBServer   : String;
+      FBPort     : Integer;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function ConfigurarConexaoFirebird(Username , Password , Server , Database : String; Port : Integer) : TFDConnection;
+  end;
+
+implementation
+
+{ TConexaoFirebird }
+
+function TConexaoFirebird.ConfigurarConexaoFirebird(Username , Password , Server , Database : String; Port : Integer): TFDConnection;
+  begin
+    with FBConexao.Params do
+      begin
+        Add('DriverID=FB');
+        UserName := Username;
+        Password := Password;
+        Database := Database;
+
+      end;
+  end;
+
+constructor TConexaoFirebird.Create;
+  begin
+    FBConexao := TFDConnection.Create(nil);
+  end;
+
+destructor TConexaoFirebird.Destroy;
+  begin
+    FreeAndNil(FBConexao);
+    inherited;
+  end;
+
+end.
