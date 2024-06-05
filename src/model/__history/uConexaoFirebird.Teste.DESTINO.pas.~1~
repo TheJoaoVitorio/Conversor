@@ -1,0 +1,32 @@
+unit uConexaoFirebird.Teste.DESTINO;
+
+interface
+
+uses
+  FireDAC.Comp.Client;
+
+type
+  TConexaoFirebirdDes = class { Conexao Destino - Banco Vazio }
+    private
+      FBConexao : TFDConnection;
+      FBQuery   : TFDQuery;
+
+      fbDesPort     : TConexaoFirebirdDes;
+      fbDesDatabase : TConexaoFirebirdDes;
+      fbDesPassword : TConexaoFirebirdDes;
+      fbDesUsername : TConexaoFirebirdDes;
+      fbDesServer   : TConexaoFirebirdDes;
+
+    public
+      property FBUsername : TConexaoFirebirdDes read fbDesUsername write fbDesUsername;
+      property FBPassword : TConexaoFirebirdDes read fbDesPassword write fbDesPassword;
+      property FBPort     : TConexaoFirebirdDes read fbDesPort     write fbDesPort;
+      property FBServer   : TConexaoFirebirdDes read fbDesServer   write fbDesServer;
+      property FBDatabase : TConexaoFirebirdDes read fbDesDatabase write fbDesDatabase;
+
+
+  end;
+
+implementation
+
+end.

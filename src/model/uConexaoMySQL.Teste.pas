@@ -27,7 +27,7 @@ type
 
       mUsername : String;
       mPassword : String;
-      //mServer   : String;
+      mServer   : String;
       mPort     : String;
       mDatabase : String;
 
@@ -40,7 +40,7 @@ type
 
       property MySqlUserName : String read mUsername write mUsername;
       property MySqlPassword : String read mPassword write mPassword;
-      //property MySqlServer   : String read mServer   write mServer;
+      property MySqlServer   : String read mServer   write mServer;
       property MySqlPort     : String read mPort     write mPort;
       property MySqlDatabase : String read mDatabase write mDatabase;
 
@@ -58,8 +58,8 @@ function TConexaoMySql.GetConexaoMySQL : TFDConnection;
         Params.Database     := mDatabase;
         Params.UserName     := mUsername;
         Params.Password     := mPassword;
-        //Params.Add('Server='+ mServer);
-        Params.Add('Port='  + mPort);
+        Params.Add('Server='+  mServer);
+        Params.Add('Port='  +  mPort);
         LoginPrompt         := False;
 
         Connected           := True;
@@ -67,6 +67,7 @@ function TConexaoMySql.GetConexaoMySQL : TFDConnection;
         Result := MySqlConexao;
       end;
   end;
+
 
 constructor TConexaoMySql.Create;
   begin
@@ -88,7 +89,7 @@ function TConexaoMySql.Select(Tabela : String): TFDQuery;
       begin
         Close;
         Connection := MySqlConexao;
-        SQL.Text   := 'SELECT * FROM' + Tabela;
+        SQL.Text   := 'SELECT * FROM ' + Tabela;
         Open;
 
         Result := MySqlQuery;

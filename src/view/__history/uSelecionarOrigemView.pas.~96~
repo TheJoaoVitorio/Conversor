@@ -1,0 +1,221 @@
+unit uSelecionarOrigemView;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils,
+  System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Buttons, Vcl.CheckLst, Vcl.DBCtrls, Data.DB ,
+  FireDAC.Comp.Client , Vcl.Grids, Vcl.DBGrids, Vcl.Menus ,
+
+  uPrincipalView,
+  uOrigemDatabaseController;
+
+type
+  TfrmSelecionarDatabases = class(TForm)
+    pnlMain: TPanel;
+    pnlNavLateral: TPanel;
+    pnlNavHeader: TPanel;
+    Image1: TImage;
+    pnlNavSair: TPanel;
+    imgSair: TImage;
+    lblNavSair: TLabel;
+    pnlContainerMain: TPanel;
+    pnlHeader: TPanel;
+    lblTextHeader: TLabel;
+    pnlContent: TPanel;
+    pnlContentLeft: TPanel;
+    Panel1: TPanel;
+    pnlBuscarDatabase: TPanel;
+    pnlBuscarImg: TPanel;
+    Image2: TImage;
+    pnlContentRight: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    SpeedButton1: TSpeedButton;
+    dsConexoesDisponiveis: TDataSource;
+    cbxTiposDeDatabases: TComboBox;
+    ListBoxOpDatabases: TListBox;
+    Label1: TLabel;
+    Edit1: TEdit;
+
+    PopupMenuOpcoesDatabases: TPopupMenu;
+    AdicionarOrigemPopUp: TMenuItem;
+    Panel2: TPanel;
+    BtnAdicionarOrigem: TSpeedButton;
+
+    procedure lblNavSairClick(Sender: TObject);
+    procedure imgSairClick(Sender: TObject);
+    procedure cbxTiposDeDatabasesChange(Sender: TObject);
+    procedure ListBoxOpDatabasesClick(Sender: TObject);
+    procedure BtnAdicionarOrigemClick(Sender: TObject);
+    procedure AdicionarOrigemPopUpClick(Sender: TObject);
+
+
+  private
+    DatabaseOrigem  : String;
+    EscolhidoPor    : String; { Aqui eu guardo o item do ComboBox ex: Teste, G10 , GDOOR }
+
+    procedure GetOpcao;
+    procedure VersoesG10;
+    procedure VersoesTeste;
+
+    function GetOpcaoOrigem : Boolean;
+    function CaptarPrimeiraLetraNaBusca(const Palavra : String) : String; {transforma a primeira letra da busca de databases em maiuscula}
+  public
+
+  end;
+
+var
+  frmSelecionarDatabases: TfrmSelecionarDatabases;
+
+implementation      { verificar qual item do ComboBox e pegar a Origem[A origem eu já estou recebendo ] }
+
+{$R *.dfm}
+
+procedure TfrmSelecionarDatabases.AdicionarOrigemPopUpClick(Sender: TObject); { PopUp }
+  begin
+    if GetOpcaoOrigem = True then
+      begin
+        if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then
+          frmPrincipal.ShowModal
+        else
+          Exit;
+      end
+    else
+      begin
+        ShowMessage('Escolha uma opção para origem.');
+        Exit;
+      end;
+  end;
+
+procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject); { BTN }
+  begin
+    if (cbxTiposDeDatabases.ItemIndex = -1) then
+      begin
+        ShowMessage('Escolha uma opção! ');
+        Exit;
+      end
+    else if GetOpcaoOrigem = True then {validar se a opção do TList não esta vazia}
+      begin
+        EscolhidoPor := cbxTiposDeDatabases.Text; {Ex: G10, Gdoor , Teste}
+
+        if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then {}
+
+          frmPrincipal.ShowModal
+        else
+          Exit;
+      end
+    else
+      begin
+        ShowMessage('Escolha uma opção de banco!');
+        Exit;
+      end;
+  end;
+
+function TfrmSelecionarDatabases.CaptarPrimeiraLetraNaBusca(
+  const Palavra: String): String;
+  begin
+    if Length(Palavra) > 0 then
+      begin
+        Result := UpperCase(Palavra[1]) + LowerCase(Copy(Palavra,2, Length(Palavra) - 1));
+      end
+    else
+      Result := Palavra;
+  end;
+
+
+procedure TfrmSelecionarDatabases.cbxTiposDeDatabasesChange(Sender: TObject);
+var
+    dbEscolhido : String;
+  begin
+    dbEscolhido :=  CaptarPrimeiraLetraNaBusca(cbxTiposDeDatabases.Text);
+
+    case cbxTiposDeDatabases.ItemIndex of
+
+      0: VersoesG10;{ G10 }
+
+
+      4: VersoesTeste;{ TESTE }
+
+    end;
+
+  end;
+
+
+procedure TfrmSelecionarDatabases.GetOpcao;
+  begin
+    if ListBoxOpDatabases.ItemIndex >= 0 then
+      begin
+        DatabaseOrigem := ListBoxOpDatabases.Items[ListBoxOpDatabases.ItemIndex];
+        Edit1.Text := DatabaseOrigem;
+
+        if not (DatabaseOrigem = '') then
+          TOrigemDatabaseController.GetController.AcessarOrigem := DatabaseOrigem
+        else
+          begin
+            ShowMessage('Escolha uma opção para origem.');
+            Exit;
+          end;
+
+      end;
+  end;
+
+function TfrmSelecionarDatabases.GetOpcaoOrigem: Boolean;
+  begin
+    if ListBoxOpDatabases.ItemIndex >= 0 then
+      begin
+        DatabaseOrigem := ListBoxOpDatabases.Items[ListBoxOpDatabases.ItemIndex];
+        Edit1.Text := DatabaseOrigem;
+
+        if DatabaseOrigem = '' then
+          begin
+            Exit;
+            Result := False;
+          end
+        else
+          begin
+            TOrigemDatabaseController.GetController.AcessarOrigem := DatabaseOrigem;
+
+            Result := True;
+          end;
+
+      end;
+  end;
+
+
+procedure TfrmSelecionarDatabases.ListBoxOpDatabasesClick(Sender: TObject);
+  begin
+    GetOpcao;
+  end;
+
+
+procedure TfrmSelecionarDatabases.VersoesG10;
+  begin
+    ListBoxOpDatabases.Clear;
+    ListBoxOpDatabases.Items.Insert(0,'Firebird 2.5');
+    ListBoxOpDatabases.Items.Insert(1,'Firebird 3.0');
+
+  end;
+
+procedure TfrmSelecionarDatabases.VersoesTeste;
+  begin
+    ListBoxOpDatabases.Clear;
+    ListBoxOpDatabases.Items.Insert(0,'MySQL 10.4.32');
+    ListBoxOpDatabases.Items.Insert(1,'Firebird 2.5.9');
+  end;
+
+procedure TfrmSelecionarDatabases.imgSairClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+procedure TfrmSelecionarDatabases.lblNavSairClick(Sender: TObject);
+  begin
+    Application.Terminate;
+  end;
+
+
+end.

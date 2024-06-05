@@ -11,6 +11,7 @@ object frmPrincipal: TfrmPrincipal
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  OnShow = FormShow
   TextHeight = 15
   object pnlMain: TPanel
     Left = 0
@@ -248,7 +249,7 @@ object frmPrincipal: TfrmPrincipal
             49454E44AE426082}
           Proportional = True
         end
-        object ComboBox2: TComboBox
+        object cbxDestino: TComboBox
           Left = 336
           Top = 32
           Width = 217
@@ -260,9 +261,9 @@ object frmPrincipal: TfrmPrincipal
           Font.Style = []
           ParentFont = False
           TabOrder = 0
-          Text = 'ComboBox1'
+          TextHint = 'Selecione a Tabela de Destino'
         end
-        object ComboBox1: TComboBox
+        object cbxOrigem: TComboBox
           Left = 24
           Top = 32
           Width = 225
@@ -274,7 +275,7 @@ object frmPrincipal: TfrmPrincipal
           Font.Style = []
           ParentFont = False
           TabOrder = 1
-          Text = 'ComboBox1'
+          TextHint = 'Selecione a Tabela de Origem'
         end
         object DBGrid1: TDBGrid
           Left = 24
@@ -302,5 +303,13 @@ object frmPrincipal: TfrmPrincipal
         end
       end
     end
+  end
+  object dsOrigem: TDataSource
+    Left = 80
+    Top = 104
+  end
+  object dsDestino: TDataSource
+    Left = 656
+    Top = 104
   end
 end

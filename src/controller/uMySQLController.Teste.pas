@@ -31,13 +31,19 @@ uses
 type
   TMySQLController = class    {TESTE}
     private
-      MySQLConexao : TConexaoMySql;
+      MySQLConexao : TObject;
+
+      MConexao     : TConexaoMySql;
+
+
       constructor Create;
       destructor Destroy; override;
     public
 
       class function GetControllerMY : TMySQLController;
-      property AcessarConexaoMy : TConexaoMySql read MySQLConexao write MySQLConexao;
+      property AcessarConexaoMy : TObject read MySQLConexao write MySQLConexao; {Externa - Acesso do controller OrigemDatabase}
+
+      property AcessoConexaoMySQL : TConexaoMySql read MConexao write MConexao;{Acesso a conexao do controller para o model}
 
       procedure ConfiguracaoConexao;
   end;
@@ -53,6 +59,7 @@ constructor TMySQLController.Create;
   begin
     inherited;
     MySQLConexao := TConexaoMySql.Create;
+    MConexao     := TConexaoMySql.Create;
 
     ConfiguracaoConexao;
   end;
@@ -60,6 +67,7 @@ constructor TMySQLController.Create;
 destructor TMySQLController.Destroy;
   begin
     FreeAndNil(MySQLConexao);
+    FreeAndNil(MConexao);
   end;
 
 
@@ -73,11 +81,11 @@ class function TMySQLController.GetControllerMY: TMySQLController;
 
 procedure TMySQLController.ConfiguracaoConexao;
   begin
-    MySQLConexao.MySqlUserName := 'root';
-    MySQLConexao.MySqlPassword := '';
-    //MySQLConexao.MySqlServer   := '<LOCAL>';
-    MySQLConexao.MySqlPort     := '3306';
-    MySQLConexao.MySqlDatabase := 'loja';
+    MConexao.MySqlUserName := 'root';
+    MConexao.MySqlPassword := '';
+    MConexao.MySqlServer   := 'localhost';
+    MConexao.MySqlPort     := '3306';
+    MConexao.MySqlDatabase := 'loja';
 
   end;
 

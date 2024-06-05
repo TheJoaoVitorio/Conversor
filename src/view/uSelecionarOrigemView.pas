@@ -77,8 +77,16 @@ implementation      { verificar qual item do ComboBox e pegar a Origem[A origem 
 
 procedure TfrmSelecionarDatabases.AdicionarOrigemPopUpClick(Sender: TObject); { PopUp }
   begin
+    EscolhidoPor := cbxTiposDeDatabases.Text;
+
     if GetOpcaoOrigem = True then
-      frmPrincipal.ShowModal
+      begin
+        if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then
+          frmPrincipal.ShowModal
+        else
+          ShowMessage('Erro ao conectar!');
+          Exit;
+      end
     else
       begin
         ShowMessage('Escolha uma opção para origem.');
@@ -96,9 +104,9 @@ procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject); { BT
     else if GetOpcaoOrigem = True then {validar se a opção do TList não esta vazia}
       begin
         EscolhidoPor := cbxTiposDeDatabases.Text; {Ex: G10, Gdoor , Teste}
+        TOrigemDatabaseController.GetController.AcessarEscolhidoPor := EscolhidoPor;
 
         if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then {}
-
           frmPrincipal.ShowModal
         else
           Exit;

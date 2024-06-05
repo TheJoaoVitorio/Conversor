@@ -1,0 +1,70 @@
+unit uConexaoFirebird.Teste.DESTINO;
+
+interface
+
+uses
+  FireDAC.Comp.Client, System.SysUtils;
+
+type
+  TConexaoFirebirdDes = class { Conexao Destino - Banco Vazio }
+    private
+      FBConexao : TFDConnection;
+      FBQuery   : TFDQuery;
+
+      fbDesPort     : TConexaoFirebirdDes;
+      fbDesDatabase : TConexaoFirebirdDes;
+      fbDesPassword : TConexaoFirebirdDes;
+      fbDesUsername : TConexaoFirebirdDes;
+      fbDesServer   : TConexaoFirebirdDes;
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function GetConexaoFBDestino : TFDConnection;
+
+      property FBUsername : TConexaoFirebirdDes read fbDesUsername write fbDesUsername;
+      property FBPassword : TConexaoFirebirdDes read fbDesPassword write fbDesPassword;
+      property FBPort     : TConexaoFirebirdDes read fbDesPort     write fbDesPort;
+      property FBServer   : TConexaoFirebirdDes read fbDesServer   write fbDesServer;
+      property FBDatabase : TConexaoFirebirdDes read fbDesDatabase write fbDesDatabase;
+
+
+  end;
+
+implementation
+
+{ TConexaoFirebirdDes }
+
+constructor TConexaoFirebirdDes.Create;
+  begin
+    FBConexao := TFDConnection.Create(nil);
+    FBQuery   := TFDQuery.Create(nil);
+  end;
+
+destructor TConexaoFirebirdDes.Destroy;
+  begin
+    FreeAndNil(FBConexao);
+    FreeAndNil(FBQuery);
+    inherited;
+  end;
+
+function TConexaoFirebirdDes.GetConexaoFBDestino : TFDConnection;
+  begin
+    with FBConexao do
+      begin
+        Params.Add('DriverID=FB');
+        Params.Database     := fbDesDatabase;
+        Params.UserName     := mUsername;
+        Params.Password     := mPassword;
+        Params.Add('Server='+  mServer);
+        Params.Add('Port='  +  mPort);
+        LoginPrompt         := False;
+
+        Connected           := True;
+
+        Result := MySqlConexao;
+      end;
+  end;
+
+end.

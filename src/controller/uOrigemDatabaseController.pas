@@ -4,21 +4,35 @@ interface
 
 uses
   Vcl.Dialogs ,
-  uMySQLController.Teste, uFirebirdController.Teste, System.SysUtils;
+  uMySQLController.Teste, uFirebirdController.Teste,
+
+  uConexaoFirebird.Teste, uConexaoMySQL.Teste,
+
+  System.SysUtils,
+  FireDAC.Comp.Client;
 
 type
   TOrigemDatabaseController = class  {Controller da unit SELECIONAR ORIGEM}
     private
       fSelecionarOrigem : String;
+      fEscolhidoPor     : String;
+
+      iClassMySQL : TConexaoMySql;
+      iClassFB    : TFirebirdTesteController;
+
     public
+      constructor Create;
+      destructor Destroy; override;
+
       class function GetController : TOrigemDatabaseController;
 
       function TesteConexao(EscolhidoPor : String) : Boolean;   { global - essa função deve testar todas conexões }
-
       function TesteConexaoMySQL    : Boolean;
       function TesteConexaoFirebird : Boolean;
+      function GetEscolhidoPor      : String;
 
-      property AcessarOrigem : String read fSelecionarOrigem write fSelecionarOrigem;
+      property AcessarOrigem       : String read fSelecionarOrigem write fSelecionarOrigem;
+      property AcessarEscolhidoPor : String read fEscolhidoPor     write fEscolhidoPor;
   end;
 
 implementation
@@ -35,6 +49,26 @@ class function TOrigemDatabaseController.GetController: TOrigemDatabaseControlle
     Result := iControllerOrigemData;
   end;
 
+constructor TOrigemDatabaseController.Create;
+  begin
+    iClassMySQL := TConexaoMySql.Create;
+    iClassFB    := TFirebirdTesteController.Create;
+  end;
+
+destructor TOrigemDatabaseController.Destroy;
+  begin
+    FreeAndNil(iClassMySQL);
+    FreeAndNil(iClassFB);
+    inherited;
+  end;
+
+function TOrigemDatabaseController.GetEscolhidoPor: String;{ Pegar a escolha do cbx }
+  var
+    oEscolha : String;
+  begin
+    oEscolha := TOrigemDatabaseController.GetController.AcessarEscolhidoPor;
+    Result   := oEscolha;
+  end;
 
 function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;
   begin
@@ -67,7 +101,7 @@ function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;
 function TOrigemDatabaseController.TesteConexaoMySQL: Boolean; {Teste - MySQL}
   begin
     try
-      if TMySQLController.GetControllerMY.AcessarConexaoMy.GetConexaoMySQL.Connected then
+      if TMySQLController.GetControllerMY.AcessoConexaoMySQL.GetConexaoMySQL.Connected then
         begin
           ShowMessage('Conectado!');
           Result := True;
