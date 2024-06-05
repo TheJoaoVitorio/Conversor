@@ -3,8 +3,7 @@ unit uFirebirdController.Teste.DESTINO;
 interface
 
 uses
-    System.SysUtils,
-    uConexaoFirebird.Teste.DESTINO;
+  uConexaoFirebird.Teste.DESTINO;
 
 type
   TFirebirdTesteDestinoController = class
@@ -33,7 +32,7 @@ constructor TFirebirdTesteDestinoController.Create;
 
 destructor TFirebirdTesteDestinoController.Destroy;
   begin
-    FreeAndNil(FBDESConexao);
+
     inherited;
   end;
 
