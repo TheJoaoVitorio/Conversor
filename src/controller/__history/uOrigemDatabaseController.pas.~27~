@@ -3,7 +3,8 @@ unit uOrigemDatabaseController;
 interface
 
 uses
-  uMySQLController.Teste, Vcl.Dialogs;
+  Vcl.Dialogs ,
+  uMySQLController.Teste, uFirebirdController.Teste;
 
 type
   TOrigemDatabaseController = class  {Controller da unit SELECIONAR ORIGEM}
@@ -12,7 +13,8 @@ type
     public
       class function GetController : TOrigemDatabaseController;
 
-      function TesteConexao         : Boolean;
+      function TesteConexao(EscolhidoPor : String) : Boolean;   { global - essa função deve testar todas conexões }
+
       function TesteConexaoMySQL    : Boolean;
       function TesteConexaoFirebird : Boolean;
 
@@ -34,20 +36,35 @@ class function TOrigemDatabaseController.GetController: TOrigemDatabaseControlle
   end;
 
 
-function TOrigemDatabaseController.TesteConexao: Boolean;
+function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;   {Param : Escolhido Por}
   begin
-    if AcessarOrigem = 'MySQL 10.4.32' then
+    if EscolhidoPor = 'TESTE' then
       begin
-        if TesteConexaoMySQL = True then
-          Result := True;
-      end;
-    if AcessarOrigem = 'Firebird' then
+
+        if AcessarOrigem = 'MySQL 10.4.32' then
+          begin
+            if TesteConexaoMySQL = True then
+              Result := True;
+          end;
+
+        if AcessarOrigem = 'Firebird 2.5.9' then
+          begin
+            if TesteConexaoFirebird = True then
+              Result := True;
+          end;
+
+      end
+
+    else if EscolhidoPor = 'G10' then
+      ShowMessage('G10');
+
+
 
 
   end;
 
 
-function TOrigemDatabaseController.TesteConexaoMySQL: Boolean;
+function TOrigemDatabaseController.TesteConexaoMySQL: Boolean; {Teste - MySQL}
   begin
     try
       if TMySQLController.GetControllerMY.AcessarConexaoMy.GetConexaoMySQL.Connected then
@@ -66,9 +83,23 @@ function TOrigemDatabaseController.TesteConexaoMySQL: Boolean;
     end;
   end;
 
-function TOrigemDatabaseController.TesteConexaoFirebird: Boolean;
+function TOrigemDatabaseController.TesteConexaoFirebird: Boolean; {Teste - Firebird}
   begin
-
+    try
+      if TFirebirdTesteController.GetController.AcessarConexaoFB.GetConexaoFirebird.Connected then
+        begin
+          ShowMessage('Conectado!');
+          Result := True;
+        end
+      else
+        begin
+          ShowMessage('Não Conectado!');
+          Result := False;
+        end;
+    except
+      ShowMessage('Algo de errado acontenceu! ');
+      Result := False;
+    end;
   end;
 
 

@@ -42,7 +42,7 @@ type
     Edit1: TEdit;
 
     PopupMenuOpcoesDatabases: TPopupMenu;
-    AdicionarOrigem1: TMenuItem;
+    AdicionarOrigemPopUp: TMenuItem;
     Panel2: TPanel;
     BtnAdicionarOrigem: TSpeedButton;
 
@@ -51,11 +51,12 @@ type
     procedure cbxTiposDeDatabasesChange(Sender: TObject);
     procedure ListBoxOpDatabasesClick(Sender: TObject);
     procedure BtnAdicionarOrigemClick(Sender: TObject);
-    procedure AdicionarOrigem1Click(Sender: TObject);
+    procedure AdicionarOrigemPopUpClick(Sender: TObject);
 
 
   private
     DatabaseOrigem  : String;
+    EscolhidoPor    : String; { Aqui eu quero pegar o item do ComboBox ex: Teste, G10 , GDOOR }
 
     procedure GetOpcao;
     procedure VersoesG10;
@@ -70,25 +71,38 @@ type
 var
   frmSelecionarDatabases: TfrmSelecionarDatabases;
 
-implementation
+implementation      { verificar qual item do ComboBox e pegar a Origem[A origem eu já estou recebendo ] }
 
 {$R *.dfm}
 
-procedure TfrmSelecionarDatabases.AdicionarOrigem1Click(Sender: TObject);
+procedure TfrmSelecionarDatabases.AdicionarOrigemPopUpClick(Sender: TObject); { PopUp }
   begin
-    GetOpcao;
-    frmPrincipal.ShowModal
+    if GetOpcaoOrigem = True then
+      frmPrincipal.ShowModal
+    else
+      begin
+        ShowMessage('Escolha uma opção para origem.');
+        Exit;
+      end;
   end;
 
-procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject);
+procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject); { BTN }
   begin
     if (cbxTiposDeDatabases.ItemIndex = -1) then
       begin
         ShowMessage('Escolha uma opção! ');
         Exit;
       end
-    else if GetOpcaoOrigem = True then
-        frmPrincipal.ShowModal
+    else if GetOpcaoOrigem = True then {validar se a opção do TList não esta vazia}
+      begin
+        EscolhidoPor := cbxTiposDeDatabases.Text; {Ex: G10, Gdoor , Teste}
+
+        if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then {}
+
+          frmPrincipal.ShowModal
+        else
+          Exit;
+      end
     else
       begin
         ShowMessage('Escolha uma opção de banco!');
@@ -171,6 +185,7 @@ procedure TfrmSelecionarDatabases.ListBoxOpDatabasesClick(Sender: TObject);
   begin
     GetOpcao;
   end;
+
 
 procedure TfrmSelecionarDatabases.VersoesG10;
   begin

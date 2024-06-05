@@ -372,6 +372,7 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
                 Height = 41
                 Align = alClient
                 Flat = True
+                OnClick = BtnAdicionarOrigemClick
                 ExplicitLeft = 80
                 ExplicitTop = 8
                 ExplicitWidth = 23

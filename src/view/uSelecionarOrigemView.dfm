@@ -489,9 +489,9 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
     OwnerDraw = True
     Left = 424
     Top = 176
-    object AdicionarOrigem1: TMenuItem
+    object AdicionarOrigemPopUp: TMenuItem
       Caption = 'Adicionar como Origem'
-      OnClick = AdicionarOrigem1Click
+      OnClick = AdicionarOrigemPopUpClick
     end
   end
 end

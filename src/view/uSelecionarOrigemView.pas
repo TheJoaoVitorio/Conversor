@@ -42,7 +42,7 @@ type
     Edit1: TEdit;
 
     PopupMenuOpcoesDatabases: TPopupMenu;
-    AdicionarOrigem1: TMenuItem;
+    AdicionarOrigemPopUp: TMenuItem;
     Panel2: TPanel;
     BtnAdicionarOrigem: TSpeedButton;
 
@@ -51,12 +51,12 @@ type
     procedure cbxTiposDeDatabasesChange(Sender: TObject);
     procedure ListBoxOpDatabasesClick(Sender: TObject);
     procedure BtnAdicionarOrigemClick(Sender: TObject);
-    procedure AdicionarOrigem1Click(Sender: TObject);
+    procedure AdicionarOrigemPopUpClick(Sender: TObject);
 
 
   private
     DatabaseOrigem  : String;
-    EscolhidoPor    : String; { Aqui eu quero pegar o item do ComboBox ex: Teste, G10 , GDOOR }
+    EscolhidoPor    : String; { Aqui eu guardo o item do ComboBox ex: Teste, G10 , GDOOR }
 
     procedure GetOpcao;
     procedure VersoesG10;
@@ -75,13 +75,18 @@ implementation      { verificar qual item do ComboBox e pegar a Origem[A origem 
 
 {$R *.dfm}
 
-procedure TfrmSelecionarDatabases.AdicionarOrigem1Click(Sender: TObject);
+procedure TfrmSelecionarDatabases.AdicionarOrigemPopUpClick(Sender: TObject); { PopUp }
   begin
-    GetOpcao;{verificar aqui}
-    frmPrincipal.ShowModal;
+    if GetOpcaoOrigem = True then
+      frmPrincipal.ShowModal
+    else
+      begin
+        ShowMessage('Escolha uma opção para origem.');
+        Exit;
+      end;
   end;
 
-procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject);
+procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject); { BTN }
   begin
     if (cbxTiposDeDatabases.ItemIndex = -1) then
       begin
@@ -90,7 +95,7 @@ procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject);
       end
     else if GetOpcaoOrigem = True then {validar se a opção do TList não esta vazia}
       begin
-        EscolhidoPor := cbxTiposDeDatabases.Text;
+        EscolhidoPor := cbxTiposDeDatabases.Text; {Ex: G10, Gdoor , Teste}
 
         if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then {}
 

@@ -36,7 +36,7 @@ class function TOrigemDatabaseController.GetController: TOrigemDatabaseControlle
   end;
 
 
-function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;
+function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;   {Param : Escolhido Por}
   begin
     if EscolhidoPor = 'TESTE' then
       begin
@@ -101,11 +101,8 @@ function TOrigemDatabaseController.TesteConexaoFirebird: Boolean; {Teste - Fireb
           Result := False;
         end;
     except
-      on E: Exception do
-        begin
-          ShowMessage('Erro: '+ E.Message);
-          Result := False;
-        end;
+      ShowMessage('Algo de errado acontenceu! ');
+      Result := False;
     end;
   end;
 

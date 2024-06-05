@@ -56,6 +56,7 @@ type
 
   private
     DatabaseOrigem  : String;
+    EscolhidoPor    : String; { Aqui eu quero pegar o item do ComboBox ex: Teste, G10 , GDOOR }
 
     procedure GetOpcao;
     procedure VersoesG10;
@@ -70,13 +71,13 @@ type
 var
   frmSelecionarDatabases: TfrmSelecionarDatabases;
 
-implementation
+implementation      { verificar qual item do ComboBox e pegar a Origem[A origem eu já estou recebendo ] }
 
 {$R *.dfm}
 
 procedure TfrmSelecionarDatabases.AdicionarOrigem1Click(Sender: TObject);
   begin
-    GetOpcao;
+    GetOpcao;{verificar aqui}
     frmPrincipal.ShowModal;
   end;
 
@@ -87,8 +88,16 @@ procedure TfrmSelecionarDatabases.BtnAdicionarOrigemClick(Sender: TObject);
         ShowMessage('Escolha uma opção! ');
         Exit;
       end
-    else if GetOpcaoOrigem = True then
-        frmPrincipal.ShowModal
+    else if GetOpcaoOrigem = True then {validar se a opção do TList não esta vazia}
+      begin
+        EscolhidoPor := cbxTiposDeDatabases.Text;
+
+        if (TOrigemDatabaseController.GetController.TesteConexao(EscolhidoPor) = True) then {}
+
+          frmPrincipal.ShowModal
+        else
+          Exit;
+      end
     else
       begin
         ShowMessage('Escolha uma opção de banco!');
@@ -171,6 +180,7 @@ procedure TfrmSelecionarDatabases.ListBoxOpDatabasesClick(Sender: TObject);
   begin
     GetOpcao;
   end;
+
 
 procedure TfrmSelecionarDatabases.VersoesG10;
   begin

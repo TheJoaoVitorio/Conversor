@@ -372,6 +372,7 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
                 Height = 41
                 Align = alClient
                 Flat = True
+                OnClick = BtnAdicionarOrigemClick
                 ExplicitLeft = 80
                 ExplicitTop = 8
                 ExplicitWidth = 23
@@ -488,9 +489,9 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
     OwnerDraw = True
     Left = 424
     Top = 176
-    object AdicionarOrigem1: TMenuItem
+    object AdicionarOrigemPopUp: TMenuItem
       Caption = 'Adicionar como Origem'
-      OnClick = AdicionarOrigem1Click
+      OnClick = AdicionarOrigemPopUpClick
     end
   end
 end

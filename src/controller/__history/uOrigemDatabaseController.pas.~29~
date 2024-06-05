@@ -36,7 +36,7 @@ class function TOrigemDatabaseController.GetController: TOrigemDatabaseControlle
   end;
 
 
-function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;
+function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;   {Param : Escolhido Por}
   begin
     if EscolhidoPor = 'TESTE' then
       begin
