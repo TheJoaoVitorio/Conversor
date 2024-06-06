@@ -10,8 +10,6 @@ uses
 
   uOrigemDatabaseController,
 
-  uDestinoController,
-
   uMySQLController.Teste , uFirebirdController.Teste ,
   uFirebirdController.Teste.DESTINO;
 
@@ -52,13 +50,15 @@ type
     procedure SetDataSourceMySqlGrid;
     procedure SetDsOrigemMySQL;
 
-    procedure GetTabelasFbTesteParaCBX;
+    procedure GetTabelasFBtesteParaCBX;
     procedure SetDataSourceFBGrid;
     procedure SetDsOrigemFBteste;
 
     procedure GetTabelasFirebirdDesParaCBX;
     procedure SetDataSourceGridDestino;
     procedure SetDsDestinoFirebird;
+
+    procedure ConfiguracoesDestinoFB;
 
   public
 
@@ -97,12 +97,19 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
         else if OpcaoOrigem = 'Firebird 2.5.9' then
           begin
             GetTabelasFbTesteParaCBX;
-            SetDsDestinoFirebird;
+            SetDataSourceFBGrid;
+            cbxOrigem.OnChange := cbxOrigemChangeFBTeste;
+
+            GetTabelasFirebirdDesParaCBX;
+            SetDataSourceGridDestino;
+
+            cbxDestino.OnChange := cbxDestinoChangeFBDestino;
           end;
 
 
       end;
   end;
+
 
 { MYSQL - TESTE }
 
@@ -126,13 +133,20 @@ procedure TfrmPrincipal.SetDsOrigemMySQL;
     dsOrigem.DataSet := TMySQLController.GetControllerMY.AcessoConexaoMySQL.Select(TabelaOrigem);
   end;
 
-
 procedure TfrmPrincipal.cbxOrigemChangeMySqlTeste(Sender: TObject);
   begin
     TabelaOrigem := cbxOrigem.Text;
     SetDsOrigemMySQL
   end;
 
+
+
+procedure TfrmPrincipal.ConfiguracoesDestinoFB;
+begin
+  GetTabelasFirebirdDesParaCBX;
+  SetDataSourceGridDestino;
+  cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+end;
 
 { FIREBIRD - TESTE }
 procedure TfrmPrincipal.GetTabelasFbTesteParaCBX;
@@ -150,7 +164,6 @@ procedure TfrmPrincipal.cbxOrigemChangeFBTeste(Sender: TObject);
     SetDsOrigemFBteste;
   end;
 
-
 procedure TfrmPrincipal.SetDsOrigemFBteste;
   begin
     dsOrigem.DataSet := TFirebirdTesteController.GetController.AcessarConexaoFB.Select(TabelaOrigem);
@@ -160,6 +173,8 @@ procedure TfrmPrincipal.SetDataSourceFBGrid;
   begin
     DBGrid1.DataSource := dsOrigem;
   end;
+
+
 
 { FIREBIRD - DESTINO (teste) }
 

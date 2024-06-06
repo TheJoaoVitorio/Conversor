@@ -58,6 +58,8 @@ type
     procedure SetDataSourceGridDestino;
     procedure SetDsDestinoFirebird;
 
+    procedure ConfiguracoesDestinoFB;
+
   public
 
   end;
@@ -86,18 +88,17 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
 
             cbxOrigem.OnChange := cbxOrigemChangeMySqlTeste;
             {destino}
-            GetTabelasFirebirdDesParaCBX;
-            SetDataSourceGridDestino;
 
-            cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+            ConfiguracoesDestinoFB;
 
           end
         else if OpcaoOrigem = 'Firebird 2.5.9' then
           begin
             GetTabelasFbTesteParaCBX;
             SetDataSourceFBGrid;
-
             cbxOrigem.OnChange := cbxOrigemChangeFBTeste;
+
+            ConfiguracoesDestinoFB;
           end;
 
 
@@ -134,7 +135,6 @@ procedure TfrmPrincipal.cbxOrigemChangeMySqlTeste(Sender: TObject);
   end;
 
 
-
 { FIREBIRD - TESTE }
 procedure TfrmPrincipal.GetTabelasFbTesteParaCBX;
   var
@@ -164,6 +164,12 @@ procedure TfrmPrincipal.SetDataSourceFBGrid;
 
 
 { FIREBIRD - DESTINO (teste) }
+procedure TfrmPrincipal.ConfiguracoesDestinoFB;
+  begin
+    GetTabelasFirebirdDesParaCBX;
+    SetDataSourceGridDestino;
+    cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+  end;
 
 procedure TfrmPrincipal.GetTabelasFirebirdDesParaCBX;
   var

@@ -10,8 +10,6 @@ uses
 
   uOrigemDatabaseController,
 
-  uDestinoController,
-
   uMySQLController.Teste , uFirebirdController.Teste ,
   uFirebirdController.Teste.DESTINO;
 
@@ -40,6 +38,8 @@ type
     procedure FormShow(Sender: TObject);
 
     procedure cbxOrigemChangeMySqlTeste(Sender: TObject);
+    procedure cbxOrigemChangeFBTeste(Sender: TObject);
+
     procedure cbxDestinoChangeFBDestino(Sender: TObject);
 
   private
@@ -50,13 +50,15 @@ type
     procedure SetDataSourceMySqlGrid;
     procedure SetDsOrigemMySQL;
 
-    procedure GetTabelasFbTesteParaCBX;
+    procedure GetTabelasFBtesteParaCBX;
     procedure SetDataSourceFBGrid;
     procedure SetDsOrigemFBteste;
 
     procedure GetTabelasFirebirdDesParaCBX;
     procedure SetDataSourceGridDestino;
     procedure SetDsDestinoFirebird;
+
+    procedure ConfiguracoesDestinoFB;
 
   public
 
@@ -86,21 +88,23 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
 
             cbxOrigem.OnChange := cbxOrigemChangeMySqlTeste;
             {destino}
-            GetTabelasFirebirdDesParaCBX;
-            SetDataSourceGridDestino;
 
-            cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+            ConfiguracoesDestinoFB
 
           end
         else if OpcaoOrigem = 'Firebird 2.5.9' then
           begin
             GetTabelasFbTesteParaCBX;
-            SetDsDestinoFirebird;
+            SetDataSourceFBGrid;
+            cbxOrigem.OnChange := cbxOrigemChangeFBTeste;
+
+            ConfiguracoesDestinoFB
           end;
 
 
       end;
   end;
+
 
 { MYSQL - TESTE }
 
@@ -141,6 +145,12 @@ procedure TfrmPrincipal.GetTabelasFbTesteParaCBX;
     TFirebirdTesteController.GetController.AcessarConexaoFB.GetConexaoFirebird.GetTableNames(NomeDatabaseDestino, '','', cbxOrigem.Items);
   end;
 
+procedure TfrmPrincipal.cbxOrigemChangeFBTeste(Sender: TObject);
+  begin
+    TabelaOrigem := cbxOrigem.Text;
+    SetDsOrigemFBteste;
+  end;
+
 procedure TfrmPrincipal.SetDsOrigemFBteste;
   begin
     dsOrigem.DataSet := TFirebirdTesteController.GetController.AcessarConexaoFB.Select(TabelaOrigem);
@@ -151,7 +161,15 @@ procedure TfrmPrincipal.SetDataSourceFBGrid;
     DBGrid1.DataSource := dsOrigem;
   end;
 
+
+
 { FIREBIRD - DESTINO (teste) }
+procedure TfrmPrincipal.ConfiguracoesDestinoFB;
+  begin
+    GetTabelasFirebirdDesParaCBX;
+    SetDataSourceGridDestino;
+    cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+  end;
 
 procedure TfrmPrincipal.GetTabelasFirebirdDesParaCBX;
   var
