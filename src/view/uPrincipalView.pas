@@ -8,7 +8,10 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.Imaging.pngimage,Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids ,
 
-  uOrigemDatabaseController, uMySQLController.Teste , uFirebirdController.Teste;
+  uOrigemDatabaseController,
+
+  uMySQLController.Teste , uFirebirdController.Teste ,
+  uFirebirdController.Teste.DESTINO;
 
 type
   TfrmPrincipal = class(TForm)
@@ -35,14 +38,25 @@ type
     procedure FormShow(Sender: TObject);
 
     procedure cbxOrigemChangeMySqlTeste(Sender: TObject);
+    procedure cbxOrigemChangeFBTeste(Sender: TObject);
+
+    procedure cbxDestinoChangeFBDestino(Sender: TObject);
 
   private
     TabelaOrigem  : String;
     TabelaDestino : String;
 
     procedure GetTabelasMySqlTesteParaCBX;
-    procedure SetDataSourceGrid;
+    procedure SetDataSourceMySqlGrid;
     procedure SetDsOrigemMySQL;
+
+    procedure GetTabelasFBtesteParaCBX;
+    procedure SetDataSourceFBGrid;
+    procedure SetDsOrigemFBteste;
+
+    procedure GetTabelasFirebirdDesParaCBX;
+    procedure SetDataSourceGridDestino;
+    procedure SetDsDestinoFirebird;
 
   public
 
@@ -67,20 +81,29 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
       begin
         if OpcaoOrigem = 'MySQL 10.4.32' then
           begin
-            ShowMessage('MySQL');
             GetTabelasMySqlTesteParaCBX;
-            SetDataSourceGrid;
+            SetDataSourceMySqlGrid;
 
             cbxOrigem.OnChange := cbxOrigemChangeMySqlTeste;
+            {destino}
+            GetTabelasFirebirdDesParaCBX;
+            SetDataSourceGridDestino;
+
+            cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+
           end
         else if OpcaoOrigem = 'Firebird 2.5.9' then
           begin
-            ShowMessage('Firebird 2')
+            GetTabelasFbTesteParaCBX;
+            SetDataSourceFBGrid;
+
+            cbxOrigem.OnChange := cbxOrigemChangeFBTeste;
           end;
 
 
       end;
   end;
+
 
 { MYSQL - TESTE }
 
@@ -94,7 +117,7 @@ procedure TfrmPrincipal.GetTabelasMySqlTesteParaCBX;
     TMySQLController.GetControllerMY.AcessoConexaoMySQL.GetConexaoMySQL.GetTableNames(NomeDatabase, '', '',cbxOrigem.Items);
   end;
 
-procedure TfrmPrincipal.SetDataSourceGrid;
+procedure TfrmPrincipal.SetDataSourceMySqlGrid; { Grid Origem }
   begin
     DBGrid1.DataSource := dsOrigem;
   end;
@@ -110,11 +133,64 @@ procedure TfrmPrincipal.cbxOrigemChangeMySqlTeste(Sender: TObject);
     SetDsOrigemMySQL
   end;
 
-{ FIM MYSQL - TESTE }
+
+
+{ FIREBIRD - TESTE }
+procedure TfrmPrincipal.GetTabelasFbTesteParaCBX;
+  var
+    NomeDatabaseDestino : String;
+  begin
+    NomeDatabaseDestino := 'host';
+
+    TFirebirdTesteController.GetController.AcessarConexaoFB.GetConexaoFirebird.GetTableNames(NomeDatabaseDestino, '','', cbxOrigem.Items);
+  end;
+
+procedure TfrmPrincipal.cbxOrigemChangeFBTeste(Sender: TObject);
+  begin
+    TabelaOrigem := cbxOrigem.Text;
+    SetDsOrigemFBteste;
+  end;
+
+procedure TfrmPrincipal.SetDsOrigemFBteste;
+  begin
+    dsOrigem.DataSet := TFirebirdTesteController.GetController.AcessarConexaoFB.Select(TabelaOrigem);
+  end;
+
+procedure TfrmPrincipal.SetDataSourceFBGrid;
+  begin
+    DBGrid1.DataSource := dsOrigem;
+  end;
+
 
 
 { FIREBIRD - DESTINO (teste) }
 
+procedure TfrmPrincipal.GetTabelasFirebirdDesParaCBX;
+  var
+    NomeDatabaseDestino : String;
+  begin
+    NomeDatabaseDestino := 'host';
+
+    TFirebirdTesteDestinoController.GetController.AcessarConexao.GetConexaoFBDestino.GetTableNames(NomeDatabaseDestino, '','',cbxDestino.Items);
+  end;
+
+procedure TfrmPrincipal.SetDataSourceGridDestino;
+  begin
+    DBGrid2.DataSource := dsDestino;
+  end;
+
+procedure TfrmPrincipal.SetDsDestinoFirebird;
+  begin
+    dsDestino.DataSet := TFirebirdTesteDestinoController.GetController.AcessarConexao.Select(TabelaDestino);
+  end;
+
+procedure TfrmPrincipal.cbxDestinoChangeFBDestino(Sender: TObject);
+  begin
+    TabelaDestino := cbxDestino.Text;
+    SetDsDestinoFirebird;
+  end;
+
+{ FIM FIREBIRD - DESTINO (teste) }
 
 
 procedure TfrmPrincipal.imgSairClick(Sender: TObject);

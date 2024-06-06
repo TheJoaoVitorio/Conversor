@@ -9,7 +9,9 @@ uses
   uMySQLController.Teste in 'controller\uMySQLController.Teste.pas',
   uOrigemDatabaseController in 'controller\uOrigemDatabaseController.pas',
   uPrincipalView in 'view\uPrincipalView.pas' {frmPrincipal},
-  uFirebirdController.Teste in 'controller\uFirebirdController.Teste.pas';
+  uFirebirdController.Teste in 'controller\uFirebirdController.Teste.pas',
+  uConexaoFirebird.Teste.DESTINO in 'model\uConexaoFirebird.Teste.DESTINO.pas',
+  uFirebirdController.Teste.DESTINO in 'controller\uFirebirdController.Teste.DESTINO.pas';
 
 {$R *.res}
 

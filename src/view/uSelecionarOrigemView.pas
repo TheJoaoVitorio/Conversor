@@ -71,13 +71,14 @@ type
 var
   frmSelecionarDatabases: TfrmSelecionarDatabases;
 
-implementation      { verificar qual item do ComboBox e pegar a Origem[A origem eu já estou recebendo ] }
+implementation
 
 {$R *.dfm}
 
 procedure TfrmSelecionarDatabases.AdicionarOrigemPopUpClick(Sender: TObject); { PopUp }
   begin
     EscolhidoPor := cbxTiposDeDatabases.Text;
+    TOrigemDatabaseController.GetController.AcessarEscolhidoPor := EscolhidoPor;
 
     if GetOpcaoOrigem = True then
       begin

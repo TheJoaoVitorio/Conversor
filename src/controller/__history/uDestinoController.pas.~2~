@@ -1,0 +1,45 @@
+unit uDestinoController;
+
+interface
+
+uses
+  uConexaoFirebird.Teste.DESTINO, System.SysUtils;
+
+type
+  TDestinoController = class
+    private
+      FBConexaoDestino : TConexaoFirebirdDes;
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+  end;
+
+implementation
+
+var
+  iDestinoController : TDestinoController;
+
+{ TDestinoController }
+
+constructor TDestinoController.Create;
+  begin
+    FBConexaoDestino := TConexaoFirebirdDes.Create;
+  end;
+
+destructor TDestinoController.Destroy;
+  begin
+    FreeAndNil(FBConexaoDestino);
+    inherited;
+  end;
+
+
+
+initialization
+  iDestinoController := TDestinoController.Create;
+
+finalization
+  if iDestinoController <> nil then
+    iDestinoController.Free;
+
+end.

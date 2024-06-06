@@ -4,7 +4,7 @@ interface
 
 uses
     System.SysUtils,
-    uConexaoFirebird.Teste.DESTINO;
+    uConexaoFirebird.Teste.DESTINO, FireDAC.Comp.Client;
 
 type
   TFirebirdTesteDestinoController = class
@@ -15,6 +15,7 @@ type
       destructor Destroy; override;
     public
       class function GetController : TFirebirdTesteDestinoController;
+      procedure ConfigurarConexao;
 
       property AcessarConexao : TConexaoFirebirdDes read FBDESConexao write FBDESConexao;
   end;
@@ -29,6 +30,8 @@ var
 constructor TFirebirdTesteDestinoController.Create;
   begin
     FBDESConexao := TConexaoFirebirdDes.Create;
+
+    ConfigurarConexao;
   end;
 
 destructor TFirebirdTesteDestinoController.Destroy;
@@ -37,12 +40,24 @@ destructor TFirebirdTesteDestinoController.Destroy;
     inherited;
   end;
 
+
 class function TFirebirdTesteDestinoController.GetController: TFirebirdTesteDestinoController;
   begin
-    if iFBDestinoController =  nil then
+    if iFBDestinoController = nil then
       iFBDestinoController := iFBDestinoController.Create;
+
+    Result := iFBDestinoController;
   end;
 
+
+procedure TFirebirdTesteDestinoController.ConfigurarConexao;
+  begin
+    FBDESConexao.FBUsername := 'SYSDBA';
+    FBDESConexao.FBPassword := 'masterkey';
+    FBDESConexao.FBPort := '3050';
+    FBDESConexao.FBServer := 'localhost';
+    FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
+  end;
 
 initialization
   iFBDestinoController := TFirebirdTesteDestinoController.Create;

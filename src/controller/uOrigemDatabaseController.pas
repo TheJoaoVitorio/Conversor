@@ -79,9 +79,9 @@ function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;
           begin
             if TesteConexaoMySQL = True then
               Result := True;
-          end;
+          end
 
-        if AcessarOrigem = 'Firebird 2.5.9' then
+        else if AcessarOrigem = 'Firebird 2.5.9' then
           begin
             if TesteConexaoFirebird = True then
               Result := True;
@@ -92,11 +92,7 @@ function TOrigemDatabaseController.TesteConexao(EscolhidoPor : String): Boolean;
     else if EscolhidoPor = 'G10' then
       ShowMessage('G10');
 
-
-
-
   end;
-
 
 function TOrigemDatabaseController.TesteConexaoMySQL: Boolean; {Teste - MySQL}
   begin

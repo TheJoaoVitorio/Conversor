@@ -260,7 +260,7 @@ object frmPrincipal: TfrmPrincipal
           Font.Name = 'Montserrat'
           Font.Style = []
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 1
           TextHint = 'Selecione a Tabela de Destino'
         end
         object cbxOrigem: TComboBox
@@ -274,7 +274,7 @@ object frmPrincipal: TfrmPrincipal
           Font.Name = 'Montserrat'
           Font.Style = []
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 0
           TextHint = 'Selecione a Tabela de Origem'
         end
         object DBGrid1: TDBGrid

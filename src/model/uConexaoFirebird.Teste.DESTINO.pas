@@ -3,13 +3,27 @@ unit uConexaoFirebird.Teste.DESTINO;
 interface
 
 uses
-  FireDAC.Comp.Client, System.SysUtils;
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB ,
+  Datasnap.DBClient, Vcl.Dialogs ;
 
 type
   TConexaoFirebirdDes = class { Conexao Destino - Banco Vazio }
     private
-      FBConexao : TFDConnection;
-      FBQuery   : TFDQuery;
+      FBConexaoDestino : TFDConnection;
+      FBQuery          : TFDQuery;
 
       fbDesPort     : String;
       fbDesDatabase : String;
@@ -39,42 +53,48 @@ implementation
 
 constructor TConexaoFirebirdDes.Create;
   begin
-    FBConexao := TFDConnection.Create(nil);
-    FBQuery   := TFDQuery.Create(nil);
+    FBConexaoDestino := TFDConnection.Create(nil);
+    FBQuery          := TFDQuery.Create(nil);
   end;
 
 destructor TConexaoFirebirdDes.Destroy;
   begin
-    FreeAndNil(FBConexao);
+    FreeAndNil(FBConexaoDestino);
     FreeAndNil(FBQuery);
     inherited;
   end;
 
 function TConexaoFirebirdDes.GetConexaoFBDestino : TFDConnection;
   begin
-    with FBConexao do
-      begin
-        Params.Add('DriverID=FB');
-        Params.Database     := fbDesDatabase;
-        Params.UserName     := fbDesUsername;
-        Params.Password     := fbDesPassword;
-        Params.Add('Server='+  fbDesServer);
-        Params.Add('Port='  +  fbDesPort);
-        LoginPrompt         := False;
+    try
+      with FBConexaoDestino do
+        begin
+          Params.Add('DriverID=FB');
+          Params.Database     := fbDesDatabase;
+          Params.UserName     := fbDesUsername;
+          Params.Password     := fbDesPassword;
+          Params.Add('Server='+  fbDesServer);
+          Params.Add('Port='  +  fbDesPort);
+          LoginPrompt         := False;
+          Connected           := True;
 
-        Connected           := True;
-
-        Result := FBConexao;
-      end;
+          Result := FBConexaoDestino;
+        end;
+    except
+      on E: Exception do
+        begin
+          ShowMessage('Erro de conexão: ' + E.Message);
+          Result := nil; // ou outra ação apropriada, dependendo da lógica do seu aplicativo
+        end;
+     end;
   end;
-
 
 function TConexaoFirebirdDes.Select(Tabela : String): TFDQuery;
   begin
     with FBQuery do
       begin
         Close;
-        Connection := FBConexao;
+        Connection := FBConexaoDestino;
         SQL.Text   := 'SELECT * FROM ' + Tabela;
         Open;
 

@@ -86,7 +86,7 @@ function TConexaoFirebird.Select(Tabela: String): TFDQuery;
       begin
         Close;
         Connection := FBConexao;
-        SQL.Text   := 'SELECT * FROM' + Tabela;
+        SQL.Text   := 'SELECT * FROM ' + Tabela;
         Open;
 
         Result := FBQuery;
