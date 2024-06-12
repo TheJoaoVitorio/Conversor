@@ -114,6 +114,8 @@
         <DCCReference Include="controller\uFirebirdController.Teste.pas"/>
         <DCCReference Include="model\uConexaoFirebird.Teste.DESTINO.pas"/>
         <DCCReference Include="controller\uFirebirdController.Teste.DESTINO.pas"/>
+        <DCCReference Include="model\uCDSProdutos.pas"/>
+        <DCCReference Include="controller\uCDSProdutosController.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

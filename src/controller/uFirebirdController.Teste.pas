@@ -46,7 +46,8 @@ procedure TFirebirdTesteController.ConfiguracaoConexaoFB;
     FBConexao.FtestPassword := 'masterkey';
     FBConexao.FtestPort     := '3050';
     FBConexao.FtestServer   := 'localhost';
-    FBConexao.FtestDatabase := 'C:\Firebird_Database\HOST.FDB'; { BANCO COM DADOS }
+    //FBConexao.FtestDatabase := 'C:\Firebird_Database\HOST.FDB'; { BANCO COM DADOS }
+    FBConexao.FtestDatabase := 'C:\Database\DATA.FDB';
   end;
 
 

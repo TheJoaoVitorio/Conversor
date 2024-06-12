@@ -11,7 +11,9 @@ uses
   uPrincipalView in 'view\uPrincipalView.pas' {frmPrincipal},
   uFirebirdController.Teste in 'controller\uFirebirdController.Teste.pas',
   uConexaoFirebird.Teste.DESTINO in 'model\uConexaoFirebird.Teste.DESTINO.pas',
-  uFirebirdController.Teste.DESTINO in 'controller\uFirebirdController.Teste.DESTINO.pas';
+  uFirebirdController.Teste.DESTINO in 'controller\uFirebirdController.Teste.DESTINO.pas',
+  uCDSProdutos in 'model\uCDSProdutos.pas',
+  uCDSProdutosController in 'controller\uCDSProdutosController.pas';
 
 {$R *.res}
 

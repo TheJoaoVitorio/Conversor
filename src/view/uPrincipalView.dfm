@@ -215,7 +215,7 @@ object frmPrincipal: TfrmPrincipal
         TabOrder = 1
         ExplicitWidth = 642
         ExplicitHeight = 367
-        object Image2: TImage
+        object imgTransferir: TImage
           Left = 264
           Top = 136
           Width = 57
@@ -248,6 +248,7 @@ object frmPrincipal: TfrmPrincipal
             7F2BCF858FF9445646E5391FC5B5C087D249BF01F4172770A3139D6C00000000
             49454E44AE426082}
           Proportional = True
+          OnClick = imgTransferirClick
         end
         object cbxDestino: TComboBox
           Left = 336
@@ -301,6 +302,18 @@ object frmPrincipal: TfrmPrincipal
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
         end
+        object DBGrid3: TDBGrid
+          Left = 144
+          Top = 224
+          Width = 320
+          Height = 120
+          TabOrder = 4
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -12
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = []
+        end
       end
     end
   end
@@ -311,5 +324,9 @@ object frmPrincipal: TfrmPrincipal
   object dsDestino: TDataSource
     Left = 656
     Top = 104
+  end
+  object DataSource1: TDataSource
+    Left = 377
+    Top = 170
   end
 end
