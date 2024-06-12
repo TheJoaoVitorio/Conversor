@@ -312,6 +312,7 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
                 Top = 0
                 Width = 264
                 Height = 45
+                Cursor = crHandPoint
                 Align = alClient
                 Color = 3618615
                 Font.Charset = ANSI_CHARSET

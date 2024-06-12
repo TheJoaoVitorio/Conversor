@@ -201,7 +201,6 @@ procedure TfrmSelecionarDatabases.VersoesG10;
     ListBoxOpDatabases.Clear;
     ListBoxOpDatabases.Items.Insert(0,'Firebird 2.5');
     ListBoxOpDatabases.Items.Insert(1,'Firebird 3.0');
-
   end;
 
 procedure TfrmSelecionarDatabases.VersoesTeste;
@@ -209,6 +208,7 @@ procedure TfrmSelecionarDatabases.VersoesTeste;
     ListBoxOpDatabases.Clear;
     ListBoxOpDatabases.Items.Insert(0,'MySQL 10.4.32');
     ListBoxOpDatabases.Items.Insert(1,'Firebird 2.5.9');
+    ListBoxOpDatabases.Cursor := crHandPoint;
   end;
 
 procedure TfrmSelecionarDatabases.imgSairClick(Sender: TObject);

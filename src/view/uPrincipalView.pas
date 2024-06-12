@@ -11,7 +11,8 @@ uses
   uOrigemDatabaseController,
 
   uMySQLController.Teste , uFirebirdController.Teste ,
-  uFirebirdController.Teste.DESTINO;
+  uCDSProdutosController,
+  uFirebirdController.Teste.DESTINO, Datasnap.DBClient;
 
 type
   TfrmPrincipal = class(TForm)
@@ -30,17 +31,23 @@ type
     cbxOrigem: TComboBox;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
-    Image2: TImage;
+    imgTransferir: TImage;
     dsOrigem: TDataSource;
     dsDestino: TDataSource;
+    DataSource1: TDataSource;
+    DBGrid3: TDBGrid;
     procedure imgSairClick(Sender: TObject);
     procedure lblNavSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
 
-    procedure cbxOrigemChangeMySqlTeste(Sender: TObject);
-    procedure cbxOrigemChangeFBTeste(Sender: TObject);
+    //procedure cbxOrigemChangeMySqlTeste(Sender: TObject);
+    //procedure cbxOrigemChangeFBTeste(Sender: TObject);
 
-    procedure cbxDestinoChangeFBDestino(Sender: TObject);
+    procedure cbxOrigemSelectMySqlTeste(Sender: TObject);
+    procedure cbxOrigemSelectFBTeste(Sender: TObject);
+
+    procedure cbxDestinoSelectFBDestino(Sender: TObject);
+    procedure imgTransferirClick(Sender: TObject);
 
   private
     TabelaOrigem  : String;
@@ -86,8 +93,7 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
             GetTabelasMySqlTesteParaCBX;
             SetDataSourceMySqlGrid;
 
-            cbxOrigem.OnChange := cbxOrigemChangeMySqlTeste;
-            {destino}
+            cbxOrigem.OnSelect := cbxOrigemSelectMySqlTeste;
 
             ConfiguracoesDestinoFB;
 
@@ -96,7 +102,8 @@ procedure TfrmPrincipal.FormShow(Sender: TObject);
           begin
             GetTabelasFbTesteParaCBX;
             SetDataSourceFBGrid;
-            cbxOrigem.OnChange := cbxOrigemChangeFBTeste;
+
+            cbxOrigem.OnSelect := cbxOrigemSelectFBTeste;
 
             ConfiguracoesDestinoFB;
           end;
@@ -128,14 +135,14 @@ procedure TfrmPrincipal.SetDsOrigemMySQL;
     dsOrigem.DataSet := TMySQLController.GetControllerMY.AcessoConexaoMySQL.Select(TabelaOrigem);
   end;
 
-procedure TfrmPrincipal.cbxOrigemChangeMySqlTeste(Sender: TObject);
+procedure TfrmPrincipal.cbxOrigemSelectMySqlTeste(Sender: TObject);
   begin
     TabelaOrigem := cbxOrigem.Text;
     SetDsOrigemMySQL
   end;
 
-
 { FIREBIRD - TESTE }
+
 procedure TfrmPrincipal.GetTabelasFbTesteParaCBX;
   var
     NomeDatabaseDestino : String;
@@ -145,7 +152,7 @@ procedure TfrmPrincipal.GetTabelasFbTesteParaCBX;
     TFirebirdTesteController.GetController.AcessarConexaoFB.GetConexaoFirebird.GetTableNames(NomeDatabaseDestino, '','', cbxOrigem.Items);
   end;
 
-procedure TfrmPrincipal.cbxOrigemChangeFBTeste(Sender: TObject);
+procedure TfrmPrincipal.cbxOrigemSelectFBTeste(Sender: TObject);
   begin
     TabelaOrigem := cbxOrigem.Text;
     SetDsOrigemFBteste;
@@ -161,14 +168,12 @@ procedure TfrmPrincipal.SetDataSourceFBGrid;
     DBGrid1.DataSource := dsOrigem;
   end;
 
-
-
 { FIREBIRD - DESTINO (teste) }
 procedure TfrmPrincipal.ConfiguracoesDestinoFB;
   begin
     GetTabelasFirebirdDesParaCBX;
     SetDataSourceGridDestino;
-    cbxDestino.OnChange := cbxDestinoChangeFBDestino;
+    cbxDestino.OnSelect := cbxDestinoSelectFBDestino;
   end;
 
 procedure TfrmPrincipal.GetTabelasFirebirdDesParaCBX;
@@ -190,7 +195,7 @@ procedure TfrmPrincipal.SetDsDestinoFirebird;
     dsDestino.DataSet := TFirebirdTesteDestinoController.GetController.AcessarConexao.Select(TabelaDestino);
   end;
 
-procedure TfrmPrincipal.cbxDestinoChangeFBDestino(Sender: TObject);
+procedure TfrmPrincipal.cbxDestinoSelectFBDestino(Sender: TObject);
   begin
     TabelaDestino := cbxDestino.Text;
     SetDsDestinoFirebird;
@@ -202,6 +207,21 @@ procedure TfrmPrincipal.cbxDestinoChangeFBDestino(Sender: TObject);
 procedure TfrmPrincipal.imgSairClick(Sender: TObject);
   begin
     Application.Terminate;
+  end;
+
+procedure TfrmPrincipal.imgTransferirClick(Sender: TObject);
+  var
+    cds : TClientDataSet;
+  begin
+    try
+      cds := TCDSProdutosController.GetInstance.AcessaCDS.iCDSProd;
+
+      DBGrid3.DataSource := DataSource1;
+      DataSource1.DataSet := cds;
+    finally
+
+    end;
+
   end;
 
 procedure TfrmPrincipal.lblNavSairClick(Sender: TObject);

@@ -54,9 +54,10 @@ procedure TFirebirdTesteDestinoController.ConfigurarConexao;
   begin
     FBDESConexao.FBUsername := 'SYSDBA';
     FBDESConexao.FBPassword := 'masterkey';
-    FBDESConexao.FBPort := '3050';
-    FBDESConexao.FBServer := 'localhost';
-    FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
+    FBDESConexao.FBPort     := '3050';
+    FBDESConexao.FBServer   := 'localhost';
+    //FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
+    FBDESConexao.FBDatabase := 'C:\Database\DATATEST.FDB';
   end;
 
 initialization

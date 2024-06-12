@@ -1,0 +1,25 @@
+program ConversorDeDados;
+
+uses
+  Vcl.Forms,
+  uSelecionarOrigemView in 'view\uSelecionarOrigemView.pas' {frmSelecionarDatabases},
+  uStylesView in 'view\uStylesView.pas',
+  uConexaoMySQL.Teste in 'model\uConexaoMySQL.Teste.pas',
+  uConexaoFirebird.Teste in 'model\uConexaoFirebird.Teste.pas',
+  uMySQLController.Teste in 'controller\uMySQLController.Teste.pas',
+  uOrigemDatabaseController in 'controller\uOrigemDatabaseController.pas',
+  uPrincipalView in 'view\uPrincipalView.pas' {frmPrincipal},
+  uFirebirdController.Teste in 'controller\uFirebirdController.Teste.pas',
+  uConexaoFirebird.Teste.DESTINO in 'model\uConexaoFirebird.Teste.DESTINO.pas',
+  uFirebirdController.Teste.DESTINO in 'controller\uFirebirdController.Teste.DESTINO.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  ReportMemoryLeaksOnShutdown   := True;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmSelecionarDatabases, frmSelecionarDatabases);
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.Run;
+end.
