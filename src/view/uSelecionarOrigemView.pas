@@ -130,7 +130,6 @@ function TfrmSelecionarDatabases.CaptarPrimeiraLetraNaBusca(
       Result := Palavra;
   end;
 
-
 procedure TfrmSelecionarDatabases.cbxTiposDeDatabasesChange(Sender: TObject);
 var
     dbEscolhido : String;
@@ -147,7 +146,6 @@ var
     end;
 
   end;
-
 
 procedure TfrmSelecionarDatabases.GetOpcao;
   begin
@@ -189,12 +187,10 @@ function TfrmSelecionarDatabases.GetOpcaoOrigem: Boolean;
       end;
   end;
 
-
 procedure TfrmSelecionarDatabases.ListBoxOpDatabasesClick(Sender: TObject);
   begin
     GetOpcao;
   end;
-
 
 procedure TfrmSelecionarDatabases.VersoesG10;
   begin

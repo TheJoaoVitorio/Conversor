@@ -24,13 +24,14 @@ type
     private
       FBConexao  : TFDConnection;
       FBQuery    : TFDQuery;
+      FQ         : TFDQuery;
 
       fbUsername: String;
       fbPassword: String;
       fbServer  : String;
       fbPort    : String;
       fbDatabase: String;
-
+      fbDriver  : String;
 
     public
       constructor Create;
@@ -44,6 +45,10 @@ type
       property FtestServer   : String read fbServer   write fbServer;
       property FtestPort     : String read fbPort     write fbPort;
       property FtestDatabase : String read fbDatabase write fbDatabase;
+      property FtestDriver : String read fbDriver   write fbDriver;
+
+      property FQuery : TFDQuery read FQ write FQ;
+      property FConexao : TFDConnection read FBConexao write FBConexao;
 
   end;
 
@@ -55,12 +60,14 @@ constructor TConexaoFirebird.Create;
   begin
     FBConexao := TFDConnection.Create(nil);
     FBQuery   := TFDQuery.Create(nil);
+    FQ    := TFDQuery.Create(nil);
   end;
 
 destructor TConexaoFirebird.Destroy;
   begin
     FreeAndNil(FBConexao);
     FreeAndNil(FBQuery);
+    FreeAndNil(FQ);
     inherited;
   end;
 
@@ -69,6 +76,7 @@ function TConexaoFirebird.GetConexaoFirebird : TFDConnection;
     with FBConexao do
       begin
         Params.Add('DriverID=FB');
+        Params.DriverID := fbDriver;
         Params.UserName := fbUsername;
         Params.Password := fbPassword;
         Params.Database := fbDatabase;
