@@ -29,7 +29,7 @@ var
 
 constructor TFirebirdTesteController.Create;
   begin
-    FBConexao := TConexaoFirebird.Create;
+    FBConexao          := TConexaoFirebird.Create;
 
     ConfiguracaoConexaoFB;
   end;
@@ -47,8 +47,8 @@ procedure TFirebirdTesteController.ConfiguracaoConexaoFB;
     FBConexao.FtestPort     := '3050';
     FBConexao.FtestServer   := 'localhost';
     FBConexao.FtestDriver   := 'FB';
-    //FBConexao.FtestDatabase := 'C:\Firebird_Database\HOST.FDB'; { BANCO COM DADOS }
-    FBConexao.FtestDatabase := 'C:\Database\DATA.FDB';
+    FBConexao.FtestDatabase := 'C:\Firebird_Database\HOST.FDB'; { BANCO COM DADOS }
+    //FBConexao.FtestDatabase := 'C:\Database\DATA.FDB';
   end;
 
 

@@ -6,13 +6,13 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils,
   System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage,Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids ,
+  Vcl.Imaging.pngimage,Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids , Datasnap.DBClient,
 
   uOrigemDatabaseController,
 
   uMySQLController.Teste , uFirebirdController.Teste ,
   uCDSProdutosController,
-  uFirebirdController.Teste.DESTINO, Datasnap.DBClient;
+  uFirebirdController.Teste.DESTINO, Vcl.ComCtrls;
 
 type
   TfrmPrincipal = class(TForm)
@@ -34,6 +34,7 @@ type
     imgTransferir: TImage;
     dsOrigem: TDataSource;
     dsDestino: TDataSource;
+    ProgressBar1: TProgressBar;
     procedure imgSairClick(Sender: TObject);
     procedure lblNavSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -220,8 +221,7 @@ procedure TfrmPrincipal.imgTransferirClick(Sender: TObject);
           TABELA_DESTINO := ConverteStringUpper(TabelaDestino);
 
           if (TABELA_ORIGEM = 'PRODUTOS') and (TABELA_DESTINO = 'PRODUTOS') then
-            //TFirebirdTesteController.GetController.AcessarConexaoFB.TransferirProdutos(TABELA_ORIGEM)
-            TCDSProdutosController.GetInstance.AcessaCDS.PovoaCds(TABELA_ORIGEM)
+            TCDSProdutosController.GetInstance.AcessaCDS.PovoaCds(TABELA_ORIGEM,TABELA_DESTINO,ProgressBar1)
           else
             ShowMessage('OLA MUNDO');
         except

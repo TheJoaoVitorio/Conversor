@@ -38,6 +38,9 @@ type
       destructor Destroy; override;
 
       function GetConexaoFirebird      : TFDConnection;
+
+      function Conexao : TFDConnection;
+
       function Select(Tabela : String) : TFDQuery;
 
       property FtestUsername : String read fbUsername write fbUsername;
@@ -45,16 +48,21 @@ type
       property FtestServer   : String read fbServer   write fbServer;
       property FtestPort     : String read fbPort     write fbPort;
       property FtestDatabase : String read fbDatabase write fbDatabase;
-      property FtestDriver : String read fbDriver   write fbDriver;
+      property FtestDriver   : String read fbDriver   write fbDriver;
 
-      property FQuery : TFDQuery read FQ write FQ;
-      property FConexao : TFDConnection read FBConexao write FBConexao;
+      property FQuery        : TFDQuery read FQ write FQ;
+      property FConexao      : TFDConnection read FBConexao write FBConexao;
 
   end;
 
 implementation
 
 { TConexaoFirebird }
+
+function TConexaoFirebird.Conexao: TFDConnection;
+  begin
+    Result := FBConexao;
+  end;
 
 constructor TConexaoFirebird.Create;
   begin
