@@ -2,8 +2,8 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
   Left = 0
   Top = 0
   Caption = 'Conversor de dados'
-  ClientHeight = 442
-  ClientWidth = 743
+  ClientHeight = 441
+  ClientWidth = 739
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,21 +15,19 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
   object pnlMain: TPanel
     Left = 0
     Top = 0
-    Width = 743
-    Height = 442
+    Width = 739
+    Height = 441
     Cursor = crHandPoint
     Align = alClient
     BevelOuter = bvNone
     Color = 3289650
     ParentBackground = False
     TabOrder = 0
-    ExplicitWidth = 739
-    ExplicitHeight = 441
     object pnlNavLateral: TPanel
       Left = 0
       Top = 0
       Width = 97
-      Height = 442
+      Height = 441
       Align = alLeft
       BevelOuter = bvNone
       Color = 3618615
@@ -41,7 +39,6 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      ExplicitHeight = 441
       object pnlNavHeader: TPanel
         AlignWithMargins = True
         Left = 3
@@ -110,7 +107,7 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
       object pnlNavSair: TPanel
         AlignWithMargins = True
         Left = 3
-        Top = 369
+        Top = 368
         Width = 91
         Height = 58
         Cursor = crHandPoint
@@ -118,7 +115,6 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 368
         object imgSair: TImage
           Left = 2
           Top = 11
@@ -166,29 +162,26 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
     object pnlContainerMain: TPanel
       Left = 97
       Top = 0
-      Width = 646
-      Height = 442
+      Width = 642
+      Height = 441
       Align = alClient
       BevelOuter = bvNone
       Color = 3289650
       ParentBackground = False
       TabOrder = 1
-      ExplicitWidth = 642
-      ExplicitHeight = 441
       object pnlHeader: TPanel
         Left = 0
         Top = 0
-        Width = 646
+        Width = 642
         Height = 74
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 642
         object lblTextHeader: TLabel
           AlignWithMargins = True
           Left = 3
           Top = 20
-          Width = 640
+          Width = 636
           Height = 51
           Margins.Top = 20
           Align = alClient
@@ -207,32 +200,29 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
       object pnlContent: TPanel
         Left = 0
         Top = 74
-        Width = 646
-        Height = 368
+        Width = 642
+        Height = 367
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 642
-        ExplicitHeight = 367
         object pnlContentLeft: TPanel
           AlignWithMargins = True
           Left = 40
           Top = 0
           Width = 320
-          Height = 368
+          Height = 367
           Margins.Left = 40
           Margins.Top = 0
           Margins.Bottom = 0
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitHeight = 367
           object Panel1: TPanel
             AlignWithMargins = True
             Left = 0
             Top = 40
             Width = 320
-            Height = 323
+            Height = 322
             Margins.Left = 0
             Margins.Top = 40
             Margins.Right = 0
@@ -242,7 +232,6 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
             BiDiMode = bdRightToLeftReadingOnly
             ParentBiDiMode = False
             TabOrder = 0
-            ExplicitHeight = 322
             object pnlBuscarDatabase: TPanel
               Left = 0
               Top = 0
@@ -385,13 +374,11 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
         object pnlContentRight: TPanel
           Left = 363
           Top = 0
-          Width = 283
-          Height = 368
+          Width = 279
+          Height = 367
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitWidth = 279
-          ExplicitHeight = 367
           object Label1: TLabel
             Left = 32
             Top = 152
@@ -409,7 +396,7 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
             AlignWithMargins = True
             Left = 30
             Top = 20
-            Width = 223
+            Width = 219
             Height = 112
             Margins.Left = 30
             Margins.Top = 20
@@ -418,12 +405,11 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 219
             object Panel4: TPanel
               AlignWithMargins = True
               Left = 40
               Top = 20
-              Width = 143
+              Width = 139
               Height = 62
               Margins.Left = 40
               Margins.Top = 20
@@ -440,11 +426,10 @@ object frmSelecionarDatabases: TfrmSelecionarDatabases
               ParentBackground = False
               ParentFont = False
               TabOrder = 0
-              ExplicitWidth = 139
               object SpeedButton1: TSpeedButton
                 Left = 0
                 Top = 0
-                Width = 143
+                Width = 139
                 Height = 62
                 Align = alClient
                 Caption = '?...'

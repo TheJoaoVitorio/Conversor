@@ -1,0 +1,99 @@
+unit uConexaoFirebird.Teste;
+
+interface
+
+uses
+  Vcl.StdCtrls,
+  Vcl.Forms,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Data.DB,
+  FireDAC.Comp.Client,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Error,
+  FireDAC.Phys.MySQL,
+  FireDAC.DApt,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB ,
+  Datasnap.DBClient;
+
+type
+  TConexaoFirebird = class
+    private
+      FBConexao  : TFDConnection;
+      FBQuery    : TFDQuery;
+      FQuery : TFDQuery;
+
+      fbUsername: String;
+      fbPassword: String;
+      fbServer  : String;
+      fbPort    : String;
+      fbDatabase: String;
+
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function GetConexaoFirebird      : TFDConnection;
+      function Select(Tabela : String) : TFDQuery;
+
+      property FtestUsername : String read fbUsername write fbUsername;
+      property FtestPassword : String read fbPassword write fbPassword;
+      property FtestServer   : String read fbServer   write fbServer;
+      property FtestPort     : String read fbPort     write fbPort;
+      property FtestDatabase : String read fbDatabase write fbDatabase;
+
+  end;
+
+implementation
+
+{ TConexaoFirebird }
+
+constructor TConexaoFirebird.Create;
+  begin
+    FBConexao := TFDConnection.Create(nil);
+    FBQuery   := TFDQuery.Create(nil);
+    FQuery    := TFDQuery.Create(nil);
+  end;
+
+destructor TConexaoFirebird.Destroy;
+  begin
+    FreeAndNil(FBConexao);
+    FreeAndNil(FBQuery);
+    FreeAndNil(FQuery);
+    inherited;
+  end;
+
+function TConexaoFirebird.GetConexaoFirebird : TFDConnection;
+  begin
+    with FBConexao do
+      begin
+        Params.Add('DriverID=FB');
+        Params.UserName := fbUsername;
+        Params.Password := fbPassword;
+        Params.Database := fbDatabase;
+        Params.Add('Server='+ fbServer);
+        Params.Add('Port='+ fbPort);
+        Connected       := True;
+
+        Result   := FBConexao;
+      end;
+  end;
+
+function TConexaoFirebird.Select(Tabela: String): TFDQuery;
+  begin
+    with FBQuery do
+      begin
+        Close;
+        Connection := FBConexao;
+        SQL.Text   := 'SELECT * FROM ' + Tabela;
+        Open;
+
+        Result := FBQuery;
+      end;
+  end;
+
+end.

@@ -34,8 +34,6 @@ type
     imgTransferir: TImage;
     dsOrigem: TDataSource;
     dsDestino: TDataSource;
-    DataSource1: TDataSource;
-    DBGrid3: TDBGrid;
     procedure imgSairClick(Sender: TObject);
     procedure lblNavSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -68,6 +66,7 @@ type
     procedure ConfiguracoesDestinoFB;
 
   public
+    function ConverteStringUpper(Nome : String) : String;
 
   end;
 
@@ -211,22 +210,42 @@ procedure TfrmPrincipal.imgSairClick(Sender: TObject);
 
 procedure TfrmPrincipal.imgTransferirClick(Sender: TObject);
   var
-    cds : TClientDataSet;
+    TABELA_ORIGEM  : String;
+    TABELA_DESTINO : String;
   begin
-    try
-      cds := TCDSProdutosController.GetInstance.AcessaCDS.iCDSProd;
+    if (cbxOrigem.ItemIndex <> -1) and (cbxDestino.ItemIndex <> -1)  then
+      begin
+        try
+          TABELA_ORIGEM  := ConverteStringUpper(TabelaOrigem);
+          TABELA_DESTINO := ConverteStringUpper(TabelaDestino);
 
-      DBGrid3.DataSource := DataSource1;
-      DataSource1.DataSet := cds;
-    finally
-
-    end;
-
+          if (TABELA_ORIGEM = 'PRODUTOS') and (TABELA_DESTINO = 'PRODUTOS') then
+            //TFirebirdTesteController.GetController.AcessarConexaoFB.TransferirProdutos(TABELA_ORIGEM)
+            TCDSProdutosController.GetInstance.AcessaCDS.PovoaCds(TABELA_ORIGEM)
+          else
+            ShowMessage('OLA MUNDO');
+        except
+          on E: Exception do
+            begin
+              ShowMessage('Error: '+ E.Message);
+            end;
+        end;
+      end
+    else
+      begin
+        ShowMessage('Insira as tabelas! ');
+        Exit;
+      end;
   end;
 
 procedure TfrmPrincipal.lblNavSairClick(Sender: TObject);
   begin
     Application.Terminate;
+  end;
+
+function TfrmPrincipal.ConverteStringUpper(Nome: String): String;
+  begin
+    Result := UpperCase(Nome);
   end;
 
 

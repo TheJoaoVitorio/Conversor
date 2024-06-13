@@ -302,18 +302,6 @@ object frmPrincipal: TfrmPrincipal
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
         end
-        object DBGrid3: TDBGrid
-          Left = 144
-          Top = 224
-          Width = 320
-          Height = 120
-          TabOrder = 4
-          TitleFont.Charset = DEFAULT_CHARSET
-          TitleFont.Color = clWindowText
-          TitleFont.Height = -12
-          TitleFont.Name = 'Segoe UI'
-          TitleFont.Style = []
-        end
       end
     end
   end
@@ -324,9 +312,5 @@ object frmPrincipal: TfrmPrincipal
   object dsDestino: TDataSource
     Left = 656
     Top = 104
-  end
-  object DataSource1: TDataSource
-    Left = 377
-    Top = 170
   end
 end
