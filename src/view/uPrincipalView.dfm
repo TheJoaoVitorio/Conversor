@@ -315,6 +315,7 @@ object frmPrincipal: TfrmPrincipal
     BarColor = clHighlight
     BackgroundColor = clWhite
     TabOrder = 1
+    Visible = False
   end
   object dsOrigem: TDataSource
     Left = 80

@@ -84,7 +84,7 @@ function TConexaoFirebirdDes.GetConexaoFBDestino : TFDConnection;
       on E: Exception do
         begin
           ShowMessage('Erro de conexão: ' + E.Message);
-          Result := nil; // ou outra ação apropriada, dependendo da lógica do seu aplicativo
+          Result := nil;
         end;
      end;
   end;

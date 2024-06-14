@@ -65,9 +65,9 @@ procedure TFirebirdTesteDestinoController.ConfigurarConexao;
     FBDESConexao.FBPassword := 'masterkey';
     FBDESConexao.FBPort     := '3050';
     FBDESConexao.FBServer   := 'localhost';
-    FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
+    //FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
     //FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio - Copia\HOST.FDB';  PRODUTOS JÁ FOI INJETADO NESSE BANCO.
-    //FBDESConexao.FBDatabase := 'C:\Database\DATATEST.FDB';
+    FBDESConexao.FBDatabase := 'C:\Database\DATATEST.FDB';
   end;
 
 

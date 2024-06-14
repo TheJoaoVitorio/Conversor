@@ -103,38 +103,38 @@ begin
   try
     try
       if TabelaOrigem = 'PRODUTOS' then
+      begin
+        cdsProd := CreateCDS(cdsProd); // Aqui eu alimento o cds
+        if cdsProd.IsEmpty then
+          cdsProd.EmptyDataSet;
+
+        with TFirebirdC.FQuery do
         begin
-          cdsProd := CreateCDS(cdsProd); // Aqui eu alimento o cds
-          if cdsProd.IsEmpty then
-            cdsProd.EmptyDataSet;
+          Close;
+          Connection := TFController.GetController.AcessarConexaoFB.GetConexaoFirebird; // Conexao origem
+          SQL.Text := 'SELECT * FROM ' + TabelaOrigem;
+          Open;
 
-          with TFirebirdC.FQuery do
-            begin
-              Close;
-              Connection := TFController.GetController.AcessarConexaoFB.GetConexaoFirebird; // Conexao origem
-              SQL.Text := 'SELECT * FROM ' + TabelaOrigem;
-              Open;
+          while not TFirebirdC.FQuery.Eof do
+          begin
+            cdsProd.Append;
+            cdsProd.FieldByName('ID_PRODUTO').AsInteger            := TFirebirdC.FQuery.FieldByName('ID_PRODUTO').AsInteger;
+            cdsProd.FieldByName('GTIN').AsString                   := TFirebirdC.FQuery.FieldByName('GTIN').AsString;
+            cdsProd.FieldByName('BARRAS').AsString                 := TFirebirdC.FQuery.FieldByName('BARRAS').AsString;
+            cdsProd.FieldByName('BARRAS_CX').AsString              := TFirebirdC.FQuery.FieldByName('BARRAS_CX').AsString;
+            cdsProd.FieldByName('PRODUTO').AsString                := TFirebirdC.FQuery.FieldByName('PRODUTO').AsString;
+            cdsProd.FieldByName('DESCRICAO_COMPRA').AsString       := TFirebirdC.FQuery.FieldByName('DESCRICAO_COMPRA').AsString;
+            cdsProd.FieldByName('DESCRICAO_COMPLEMENTAR').AsString := TFirebirdC.FQuery.FieldByName('DESCRICAO_COMPLEMENTAR').AsString;
+            cdsProd.FieldByName('CODIGO_BALANCA').AsInteger        := TFirebirdC.FQuery.FieldByName('CODIGO_BALANCA').AsInteger;
+            cdsProd.FieldByName('REFERENCIA').AsString             := TFirebirdC.FQuery.FieldByName('REFERENCIA').AsString;
+            cdsProd.FieldByName('ESTOQUE').AsFloat                 := TFirebirdC.FQuery.FieldByName('ESTOQUE').AsFloat;
 
-              while not TFirebirdC.FQuery.Eof do
-                begin
-                  cdsProd.Append;
-                  cdsProd.FieldByName('ID_PRODUTO').AsInteger            := TFirebirdC.FQuery.FieldByName('ID_PRODUTO').AsInteger;
-                  cdsProd.FieldByName('GTIN').AsString                   := TFirebirdC.FQuery.FieldByName('GTIN').AsString;
-                  cdsProd.FieldByName('BARRAS').AsString                 := TFirebirdC.FQuery.FieldByName('BARRAS').AsString;
-                  cdsProd.FieldByName('BARRAS_CX').AsString              := TFirebirdC.FQuery.FieldByName('BARRAS_CX').AsString;
-                  cdsProd.FieldByName('PRODUTO').AsString                := TFirebirdC.FQuery.FieldByName('PRODUTO').AsString;
-                  cdsProd.FieldByName('DESCRICAO_COMPRA').AsString       := TFirebirdC.FQuery.FieldByName('DESCRICAO_COMPRA').AsString;
-                  cdsProd.FieldByName('DESCRICAO_COMPLEMENTAR').AsString := TFirebirdC.FQuery.FieldByName('DESCRICAO_COMPLEMENTAR').AsString;
-                  cdsProd.FieldByName('CODIGO_BALANCA').AsInteger        := TFirebirdC.FQuery.FieldByName('CODIGO_BALANCA').AsInteger;
-                  cdsProd.FieldByName('REFERENCIA').AsString             := TFirebirdC.FQuery.FieldByName('REFERENCIA').AsString;
-                  cdsProd.FieldByName('ESTOQUE').AsFloat                 := TFirebirdC.FQuery.FieldByName('ESTOQUE').AsFloat;
+            TFirebirdC.FQuery.Next;
+          end;
 
-                  TFirebirdC.FQuery.Next;
-                end;
-
-              Result := TFirebirdC.FQuery;
-            end;
-        end
+          Result := TFirebirdC.FQuery;
+        end;
+      end
       else
       begin
         ShowMessage('Falha na transferência.');
@@ -151,8 +151,7 @@ begin
   finally
     // Aqui eu chamo a função para inserir os produtos
     InsereProdutos(TabelaDestino, ProgressBar);
-    ProgressBar.Visible := False;
-    ShowMessage('Migração feita com sucesso! ');
+    ShowMessage('Aqui Insere Produtos');
   end;
 end;
 
@@ -270,7 +269,6 @@ begin
   ProgressBar.Min := 0;
   ProgressBar.Max := TotalRegistros;
   ProgressBar.Position := 0;
-  ProgressBar.Visible := True;
 
   if TotalRegistros >= RegistroAtual then
     begin
@@ -294,7 +292,6 @@ begin
               ExecSQL;
 
               RegistroAtual := RegistroAtual + 1;
-              Sleep(2000)                 ;
               ProgressBar.Position := RegistroAtual; // Atualizar a barra de progresso
               cdsProd.Next;
             end;

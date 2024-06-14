@@ -151,7 +151,7 @@ begin
   finally
     // Aqui eu chamo a função para inserir os produtos
     InsereProdutos(TabelaDestino, ProgressBar);
-    ProgressBar.Visible := False;
+    ProgressBar.StepIt;
     ShowMessage('Migração feita com sucesso! ');
   end;
 end;
@@ -294,7 +294,6 @@ begin
               ExecSQL;
 
               RegistroAtual := RegistroAtual + 1;
-              Sleep(2000)                 ;
               ProgressBar.Position := RegistroAtual; // Atualizar a barra de progresso
               cdsProd.Next;
             end;

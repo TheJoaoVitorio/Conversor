@@ -221,7 +221,10 @@ procedure TfrmPrincipal.imgTransferirClick(Sender: TObject);
           TABELA_DESTINO := ConverteStringUpper(TabelaDestino);
 
           if (TABELA_ORIGEM = 'PRODUTOS') and (TABELA_DESTINO = 'PRODUTOS') then
-            TCDSProdutosController.GetInstance.AcessaCDS.PovoaCds(TABELA_ORIGEM,TABELA_DESTINO,ProgressBar1)
+            begin
+              TCDSProdutosController.GetInstance.AcessaCDS.PovoaCds(TABELA_ORIGEM,TABELA_DESTINO,ProgressBar1);
+              DBGrid2.Update
+            end
           else
             ShowMessage('OLA MUNDO');
         except
