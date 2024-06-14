@@ -78,7 +78,7 @@ function TConexaoFirebirdDes.GetConexaoFBDestino : TFDConnection;
           LoginPrompt         := False;
           Connected           := True;
 
-          Result := FBConexaoDestino;
+          Result              := FBConexaoDestino;
         end;
     except
       on E: Exception do
@@ -98,7 +98,7 @@ function TConexaoFirebirdDes.Select(Tabela : String): TFDQuery;
         SQL.Text   := 'SELECT * FROM ' + Tabela;
         Open;
 
-        Result := FBQuery;
+        Result     := FBQuery;
       end;
   end;
 

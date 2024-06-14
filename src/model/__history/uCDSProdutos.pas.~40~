@@ -1,0 +1,195 @@
+unit uCDSProdutos;
+
+interface
+
+uses
+  Datasnap.DBClient, Data.DB, System.SysUtils, FireDAC.Comp.Client,Vcl.Dialogs,
+
+  uConexaoFirebird.Teste , uFirebirdController.Teste,
+
+  uConexaoFirebird.Teste.DESTINO, uFirebirdController.Teste.DESTINO
+
+  ;
+
+type
+  TCDSProdutos = class { FIREBIRD }
+    private
+      TFirebirdC   : TConexaoFirebird;{Con - Origem}
+      TFController : TFirebirdTesteController;{Controller - Origem}
+
+      TFBConDestino       : TConexaoFirebirdDes;
+      TFControllerDestino : TFirebirdTesteDestinoController;
+
+      cdsProd    : TClientDataSet;
+      cdsDestino : TClientDataSet;
+
+      FBQuery    : TFDQuery;
+
+
+    public
+      constructor Create;
+      destructor Destroy; override;
+
+      function CreateCDS(CDS : TClientDataSet) : TClientDataSet;
+
+      function PovoaCds(TabelaOrigem , TabelaDestino : String) : TFDQuery;
+      function InsereProdutos(TabelaDestino : String) : TFDQuery;
+
+      //property iCDSProd : TClientDataSet read cdsProd write cdsProd;
+  end;
+
+implementation
+
+{ TCDSProdutos }
+
+constructor TCDSProdutos.Create;
+  begin
+    inherited Create;
+    TFirebirdC    := TConexaoFirebird.Create; {Conexao Origem - FB}
+    TFController  := TFirebirdTesteController.Create; {Controller - FB}
+
+    TFBConDestino       := TConexaoFirebirdDes.Create;
+    TFControllerDestino := TFirebirdTesteDestinoController.Create;
+
+    FBQuery := TFDQuery.Create(nil);
+
+    //CriarCDS();
+  end;
+
+destructor TCDSProdutos.Destroy;
+  begin
+    //FreeAndNil(iCDSProd);
+
+    FreeAndNil(TFirebirdC);
+    FreeAndNil(TFController);
+
+    FreeAndNil(TFBConDestino);
+    FreeAndNil(TFControllerDestino);
+
+    FreeAndNil(FBQuery);
+
+    FreeAndNil(cdsProd);
+    inherited;
+  end;
+
+function TCDSProdutos.CreateCDS(CDS: TClientDataSet): TClientDataSet;
+  begin
+    CDS := TCLientDataSet.Create(nil);
+
+      with CDS do
+        begin
+          FieldDefs.Add('ID_PRODUTO', ftInteger);
+          FieldDefs.Add('GTIN', ftString , 14);
+          FieldDefs.Add('BARRAS', ftString , 30);
+          FieldDefs.Add('BARRAS_CX', ftString , 30);
+          FieldDefs.Add('PRODUTO', ftString, 120);
+          FieldDefs.Add('DESCRICAO_COMPRA', ftString , 120);
+          FieldDefs.Add('DESCRICAO_COMPLEMENTAR', ftString ,500);
+          FieldDefs.Add('CODIGO_BALANCA', ftInteger);
+          FieldDefs.Add('REFERENCIA', ftString , 100);
+          FieldDefs.Add('ESTOQUE', ftString , 18);
+
+        end;
+
+      CDS.CreateDataSet;
+      CDS.Open;
+
+      Result := CDS;
+  end;
+
+
+function TCDSProdutos.PovoaCDS(TabelaOrigem , TabelaDestino : String) : TFDQuery;{ConexaoOrigem e Controller dele}
+  begin
+    try
+      try
+        if TabelaOrigem = 'PRODUTOS' then
+          begin
+            cdsProd := CreateCDS(cdsProd); {aqui eu alimento o cds}
+            cdsProd.EmptyDataSet;
+            with TFirebirdC.FQuery do
+              begin
+                Close;
+                Connection := TFController.GetController.AcessarConexaoFB.GetConexaoFirebird;{conexao origem}
+                SQL.Text   := 'SELECT * FROM ' + TabelaOrigem;
+                Open;
+
+                while not TFirebirdC.FQuery.Eof do
+                  begin
+                    cdsProd.Append;
+                    cdsProd.FieldByName('ID_PRODUTO').AsInteger              := TFirebirdC.FQuery.FieldByName('ID_PRODUTO').AsInteger;
+                    cdsProd.FieldByName('GTIN').AsString                     := TFirebirdC.FQuery.FieldByName('GTIN').AsString;
+                    cdsProd.FieldByName('BARRAS').AsString                   := TFirebirdC.FQuery.FieldByName('BARRAS').AsString;
+                    cdsProd.FieldByName('BARRAS_CX').AsString                := TFirebirdC.FQuery.FieldByName('BARRAS_CX').AsString;
+                    cdsProd.FieldByName('PRODUTO').AsString                  := TFirebirdC.FQuery.FieldByName('PRODUTO').AsString;
+                    cdsProd.FieldByName('DESCRICAO_COMPRA').AsString         := TFirebirdC.FQuery.FieldByName('DESCRICAO_COMPRA').AsString;
+                    cdsProd.FieldByName('DESCRICAO_COMPLEMENTAR').AsString   := TFirebirdC.FQuery.FieldByName('DESCRICAO_COMPLEMENTAR').AsString;
+                    cdsProd.FieldByName('CODIGO_BALANCA').AsInteger          := TFirebirdC.FQuery.FieldByName('CODIGO_BALANCA').AsInteger;
+                    cdsProd.FieldByName('REFERENCIA').AsString               := TFirebirdC.FQuery.FieldByName('REFERENCIA').AsString;
+                    cdsProd.FieldByName('ESTOQUE').AsString                  := TFirebirdC.FQuery.FieldByName('ESTOQUE').AsString;
+
+                    TFirebirdC.FQuery.Next;
+                  end;
+
+                  Result := TFirebirdC.FQuery;
+              end;
+          end
+        else
+          begin
+            ShowMessage('Falha na transferencia.');
+            Exit;
+          end;
+      except
+        on Error: Exception do
+          begin
+            ShowMessage('ERROR: '+Error.Message);
+            Result.Free;
+            raise;
+          end;
+
+      end;
+
+    finally
+      //aqui eu chamo a funcao para Inserir os produtos
+      InsereProdutos(TabelaDestino);
+      ShowMessage('Aqui Insere Produtos');
+    end;
+  end;
+
+function TCDSProdutos.InsereProdutos(TabelaDestino: String): TFDQuery;
+  var
+    RegistroAtual : Integer;
+  begin
+    RegistroAtual := 1;
+
+    cdsProd.First;
+    FBQuery.Close;
+    FBQuery.Connection := TFController.GetController.AcessarConexaoFB.GetConexaoFirebird;
+
+    if cdsProd.RecordCount >= RegistroAtual then
+      while not cdsProd.Eof do
+        begin
+          with FBQuery do
+            begin
+              SQL.Text := 'INSERT INTO ' + TabelaDestino + '(ID_PRODUTO, GTIN, BARRAS, BARRAS_CX, PRODUTO, DESCRICAO_COMPRA,DESCRICAO_COMPLEMENTAR, CODIGO_BALANCA, REFERENCIA, ESTOQUE) '+
+                          'VALUES (:ID_PRODUTO, :GTIN, :BARRAS, :BARRAS_CX, :PRODUTO, :DESCRICAO_COMPRA,:DESCRICAO_COMPLEMENTAR, :CODIGO_BALANCA, :REFERENCIA, :ESTOQUE)';
+
+              ParamByName('ID_PRODUTO').AsInteger            := cdsProd.FieldByName('ID_PRODUTO').AsInteger;
+              ParamByName('GTIN').AsString                   := cdsProd.FieldByName('GTIN').AsString;
+              ParamByName('BARRAS').AsString                 := cdsProd.FieldByName('BARRAS').AsString;
+              ParamByName('BARRAS_CX').AsString              := cdsProd.FieldByName('BARRAS_CX').AsString;
+              ParamByName('PRODUTO').AsString                := cdsProd.FieldByName('PRODUTO').AsString;
+              ParamByName('DESCRICAO_COMPRA').AsString       := cdsProd.FieldByName('DESCRICAO_COMPRA').AsString;
+              ParamByName('DESCRICAO_COMPLEMENTAR').AsString := cdsProd.FieldByName('DESCRICAO_COMPLEMENTAR').AsString;
+              ParamByName('CODIGO_BALANCA').AsInteger        := cdsProd.FieldByName('CODIGO_BALANCA').AsInteger;
+              ParamByName('REFERENCIA').AsString             := cdsProd.FieldByName('REFERENCIA').AsString;
+              ParamByName('ESTOQUE').AsString                := cdsProd.FieldByName('ESTOQUE').AsString;
+              ExecSQL;
+
+              registroAtual := registroAtual + 1;
+              cdsProd.Next;
+            end;
+        end;
+  end;
+
+
+end.

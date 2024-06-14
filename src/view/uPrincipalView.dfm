@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  Caption = 'frmPrincipal'
+  Caption = 'Conversor de Dados'
   ClientHeight = 442
   ClientWidth = 743
   Color = clBtnFace
@@ -283,6 +283,7 @@ object frmPrincipal: TfrmPrincipal
           Top = 72
           Width = 225
           Height = 201
+          ReadOnly = True
           TabOrder = 2
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
@@ -295,6 +296,7 @@ object frmPrincipal: TfrmPrincipal
           Top = 72
           Width = 217
           Height = 201
+          ReadOnly = True
           TabOrder = 3
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
@@ -304,6 +306,15 @@ object frmPrincipal: TfrmPrincipal
         end
       end
     end
+  end
+  object ProgressBar1: TProgressBar
+    Left = 256
+    Top = 202
+    Width = 249
+    Height = 49
+    BarColor = clHighlight
+    BackgroundColor = clWhite
+    TabOrder = 1
   end
   object dsOrigem: TDataSource
     Left = 80

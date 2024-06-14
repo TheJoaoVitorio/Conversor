@@ -15,7 +15,10 @@ type
       destructor Destroy; override;
     public
       class function GetController : TFirebirdTesteDestinoController;
+
       procedure ConfigurarConexao;
+
+      function TransfereProdutos(TabelaDestino : String) : TFDQuery;
 
       property AcessarConexao : TConexaoFirebirdDes read FBDESConexao write FBDESConexao;
   end;
@@ -50,15 +53,24 @@ class function TFirebirdTesteDestinoController.GetController: TFirebirdTesteDest
   end;
 
 
+function TFirebirdTesteDestinoController.TransfereProdutos(
+  TabelaDestino: String): TFDQuery;
+  begin
+
+  end;
+
 procedure TFirebirdTesteDestinoController.ConfigurarConexao;
   begin
     FBDESConexao.FBUsername := 'SYSDBA';
     FBDESConexao.FBPassword := 'masterkey';
     FBDESConexao.FBPort     := '3050';
     FBDESConexao.FBServer   := 'localhost';
-    //FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
-    FBDESConexao.FBDatabase := 'C:\Database\DATATEST.FDB';
+    FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio\HOST.FDB';
+    //FBDESConexao.FBDatabase := 'C:\Firebird_Database\BancosVazio - Copia\HOST.FDB';  PRODUTOS JÁ FOI INJETADO NESSE BANCO.
+    //FBDESConexao.FBDatabase := 'C:\Database\DATATEST.FDB';
   end;
+
+
 
 initialization
   iFBDestinoController := TFirebirdTesteDestinoController.Create;
